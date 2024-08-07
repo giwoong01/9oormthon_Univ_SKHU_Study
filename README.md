@@ -1,1 +1,1 @@
-# 9oormthon_Univ_SKHU_Study_Week1
+# 9oormthon_Univ_SKHU_Study

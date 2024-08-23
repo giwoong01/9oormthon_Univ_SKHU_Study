@@ -37,3 +37,4 @@ out/
 .vscode/
 
 src/**/application-prod.yml
+!**/Leeyeeun/skhu-9roomthon-login/src/main/resources/application-prod.yml

@@ -1,4 +1,4 @@
-package com.goorm.goormthon_univ_login_study.domain.user.domain;
+package com.goorm.goormthon_univ_login_study.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

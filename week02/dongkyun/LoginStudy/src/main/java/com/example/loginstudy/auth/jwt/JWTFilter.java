@@ -19,10 +19,6 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String LOGIN_URI_PATTERN = "^/login(?:/.*)?$";
     private static final String OAUTH2_URI_PATTERN = "^/oauth2(?:/.*)?$";
     private static final String JOIN_URI_PATTERN = "^/join(?:/.*)?$";
-    private static final String PRODUCT_URI_PATTERN = "^/product";
-    private static final String PRODUCT_MENU_URI_PATTERN = "^/product/menu(?:/.*)?$";
-    private static final String PRODUCT_CAFFEINE_URI_PATTERN = "^/product/caffeine(?:/.*)?$";
-    private static final String PRODUCT_SEARCH_URI_PATTERN = "^/product/search(?:/.*)?$";
 
     private static final String AUTHORIZATION_COOKIE_NAME = "Authorization";
     private static final String TOKEN_EXPIRED_MESSAGE = "토큰 만료";
@@ -66,9 +62,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private boolean shouldSkipAuthentication(String requestUri) {
         return requestUri.matches(LOGIN_URI_PATTERN) || requestUri.matches(OAUTH2_URI_PATTERN)
-                || requestUri.matches(JOIN_URI_PATTERN) || requestUri.matches(PRODUCT_URI_PATTERN)
-                || requestUri.matches(PRODUCT_CAFFEINE_URI_PATTERN) || requestUri.matches(PRODUCT_MENU_URI_PATTERN)
-                || requestUri.matches(PRODUCT_SEARCH_URI_PATTERN);
+                || requestUri.matches(JOIN_URI_PATTERN);
     }
 
     private String extractAuthorizationToken(HttpServletRequest request) {

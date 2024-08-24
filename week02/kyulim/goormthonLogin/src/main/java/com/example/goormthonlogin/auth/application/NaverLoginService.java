@@ -19,10 +19,10 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class NaverLoginService {
 
-    @Value("${naver.client-id}")
+    @Value("${oauth.naver.client-id}")
     private String NAVER_CLIENT_ID;
 
-    @Value("${naver.client-secret}")
+    @Value("${oauth.naver.secret}")
     private String NAVER_CLIENT_SECRET;
 
     private final String NAVER_TOKEN_URL = "https://nid.naver.com/oauth2.0/token";
@@ -53,9 +53,10 @@ public class NaverLoginService {
     }
 
     public Token loginOrSignUp(String naverAccessToken) {
-        MemberInfo memberInfo = getUserInfo(naverAccessToken);
+        MemberInfo.NaverMemberInfo memberInfo = getUserInfo(naverAccessToken);
+        System.out.println(memberInfo);
 
-        if (!memberInfo.getVerifiedEmail()) {
+        if (memberInfo.getEmail()==null) {
             throw new RuntimeException("이메일 인증이 되지 않은 유저입니다.");
         }
 
@@ -70,7 +71,7 @@ public class NaverLoginService {
         return tokenProvider.createToken(member);
     }
 
-    public MemberInfo getUserInfo(String accessToken) {
+    public MemberInfo.NaverMemberInfo getUserInfo(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
@@ -81,8 +82,9 @@ public class NaverLoginService {
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             String json = responseEntity.getBody();
+            System.out.println(json); // 네이버로부터 요청 받고 응답 출력(유저 정보)
             Gson gson = new Gson();
-            return gson.fromJson(json, MemberInfo.class);
+            return gson.fromJson(json, MemberInfo.NaverMemberResult.class).getResponse();
         }
 
         throw new RuntimeException("유저 정보를 가져오는데 실패했습니다.");

@@ -4,11 +4,9 @@ package com.example.goormthonlogin.auth.application;
 import com.example.goormthonlogin.auth.dto.MemberInfo;
 import com.example.goormthonlogin.auth.dto.Token;
 import com.example.goormthonlogin.auth.jwt.TokenProvider;
-import com.example.goormthonlogin.member.api.dto.MemberLoginReqDto;
 import com.example.goormthonlogin.member.domain.Member;
 import com.example.goormthonlogin.member.domain.Role;
 import com.example.goormthonlogin.member.domain.repository.MemberRepository;
-import com.example.goormthonlogin.member.exeption.InvalidMemberException;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +60,7 @@ public class GoogleLoginService {
 
     // 로그인 회원가입
     public Token loginOrSignUp(String googleAccessToken) {
-        MemberInfo memberInfo = getUserInfo(googleAccessToken);
+        MemberInfo.GoogleMemberInfo memberInfo = getUserInfo(googleAccessToken);
 
         if (!memberInfo.getVerifiedEmail()) {
             throw new RuntimeException("이메일 인증이 되지 않은 유저입니다.");
@@ -81,7 +77,7 @@ public class GoogleLoginService {
     }
 
     // 구글 액세스 토큰으로 사용자 정보 가져오기
-    public MemberInfo getUserInfo(String accessToken) {
+    public MemberInfo.GoogleMemberInfo getUserInfo(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + accessToken;
 
@@ -96,7 +92,7 @@ public class GoogleLoginService {
             String json = responseEntity.getBody();
             Gson gson = new Gson();
             // json 응답 UserInfo 객체로 변환해서 반환
-            return gson.fromJson(json,MemberInfo.class);
+            return gson.fromJson(json, MemberInfo.GoogleMemberInfo.class);
         }
 
         // 요청 실패 예외

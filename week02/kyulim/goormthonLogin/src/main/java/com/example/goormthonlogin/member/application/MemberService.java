@@ -1,5 +1,6 @@
 package com.example.goormthonlogin.member.application;
 
+import com.example.goormthonlogin.auth.error.CustomAuthenticationException;
 import com.example.goormthonlogin.auth.jwt.TokenProvider;
 import com.example.goormthonlogin.auth.dto.Token;
 import com.example.goormthonlogin.member.api.dto.MemberLoginReqDto;
@@ -32,7 +33,7 @@ public class MemberService {
     public void join(MemberSaveReqDto memberSaveReqDto) {
         // 존재하는 이메일인지
         if (memberRepository.existsByEmail(memberSaveReqDto.email())) {
-            throw new InvalidMemberException("이미 존재하는 이메일입니다.");
+            throw new CustomAuthenticationException("이미 존재하는 이메일입니다.");
         }
         Member member = Member.builder()
                 .email(memberSaveReqDto.email())

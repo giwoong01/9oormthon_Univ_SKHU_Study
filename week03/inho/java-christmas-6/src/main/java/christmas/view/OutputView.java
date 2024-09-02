@@ -48,6 +48,7 @@ public class OutputView {
         if (events.isEmpty()) {
             System.out.println("없음");
             System.out.println();
+
             return;
         }
         for (Event event : events) {
@@ -75,6 +76,7 @@ public class OutputView {
 
     public static String formatPrice(int price) {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        
         return numberFormat.format(price);
     }
 }

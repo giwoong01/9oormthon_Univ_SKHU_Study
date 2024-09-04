@@ -7,8 +7,8 @@ import java.util.List;
 
 public class InputView {
     private static final String INPUT_PRICE = "구입금액을 입력해 주세요.";
-    private static final String INPUT_WINNING_NUMBERS = "당첨 번호를 입력해 주세요.";
-    private static final String INPUT_BONUS_NUMBER = "보너스 번호를 입력해 주세요.";
+    private static final String INPUT_WINNING_NUMBERS ="\n당첨 번호를 입력해 주세요.";
+    private static final String INPUT_BONUS_NUMBER = "\n보너스 번호를 입력해 주세요.";
 
     public static int inputPrice() {
         System.out.println(INPUT_PRICE);
@@ -16,12 +16,12 @@ public class InputView {
     }
 
     public static List<Integer> inputWinningNumbers() {
-        System.out.println("\n" + INPUT_WINNING_NUMBERS);
+        System.out.println(INPUT_WINNING_NUMBERS);
         return stringToNumbers(Console.readLine());
     }
 
     public static int inputBonusNumber() {
-        System.out.println("\n" + INPUT_BONUS_NUMBER);
+        System.out.println(INPUT_BONUS_NUMBER);
         return convertToIntegerElement(Console.readLine());
     }
 

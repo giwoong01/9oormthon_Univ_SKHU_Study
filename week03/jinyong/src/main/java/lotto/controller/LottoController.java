@@ -11,52 +11,68 @@ import java.util.Map;
 
 public class LottoController {
 
-    private static LottoAmount amount;
-    private static List<Lotto> userLottos;
-    private static final LottoResultManager manager = new LottoResultManager();
+    private final LottoResultManager manager;
+    private final LottoAmount amount;
+
+    public LottoController() {
+        manager = new LottoResultManager();
+        amount = setLottoAmount();
+    }
+
+    private LottoAmount setLottoAmount() {
+            try {
+                return new LottoAmount(InputView.inputPrice());
+            } catch (IllegalArgumentException e) {
+                return setLottoAmount();
+            }
+    }
 
     public void run() {
-        processLottoCreation();
-        processLottoResult();
+        List<Lotto> userLottos = createLottos(amount);
+        printLottos(userLottos);
+        processLottoResult(userLottos);
     }
 
-    private void processLottoCreation() {
-        amount = inputLottoAmount();
-        userLottos = createLottos(amount);
-        printLottosCreationArea(userLottos);
+    private List<Lotto> createLottos(LottoAmount amount) {
+        List<Lotto> returningLottos = new ArrayList<>();
+        Lotto lotto;
+        for (int lottoNumber = 0; lottoNumber < amount.calculateLottoCount(); lottoNumber++) {
+            lotto = new Lotto(RandomNumbers.generateRandomNumbers());
+            returningLottos.add(lotto);
+        }
+        return returningLottos;
     }
 
-    private void processLottoResult() {
-        Lotto winningLotto = inputWinningLotto();
-        int bonusNumber = InputView.inputBonusNumber();
-        Lotto.validateDuplicatedBonusNumber(winningLotto.getNumbers(), bonusNumber);
-        printLottoResultArea(winningLotto, userLottos, bonusNumber, manager, amount);
-    }
-
-    private static LottoAmount inputLottoAmount() {
-        return new LottoAmount(InputView.inputPrice());
-    }
-
-
-    public void printLottosCreationArea(List<Lotto> lottos) {
+    private void printLottos(List<Lotto> lottos) {
         OutputView.printLottoCount(lottos.size());
         lottos.stream()
                 .map(Lotto::getNumbers)
                 .forEach(System.out::println);
     }
 
-    private static Lotto inputWinningLotto() {
-        return new Lotto(InputView.inputWinningNumbers());
+    private void processLottoResult(List<Lotto> userLottos) {
+        try {
+            List<Integer> winningNumbers = InputView.inputWinningNumbers();
+            int bonusNumber = InputView.inputBonusNumber();
+            Lotto winningLotto = createWinningLottoWithBonusNumber(winningNumbers, bonusNumber);
+            printLottoResult(winningLotto, bonusNumber, userLottos);
+        } catch (IllegalArgumentException e) {
+            processLottoResult(userLottos);
+        }
+    }
+
+    private Lotto createWinningLottoWithBonusNumber(List<Integer> winningNumbers, int bonusNumber) {
+        return new Lotto(winningNumbers, bonusNumber);
     }
 
 
-    public void printLottoResultArea(Lotto winningLotto, List<Lotto> lottos, int bonusNumber, LottoResultManager manager, LottoAmount amount) {
-        Map<Rank,Integer> result = calculateWinningResult(winningLotto, lottos, bonusNumber, manager);
+    private void printLottoResult(Lotto winningLotto, int bonusNumber, List<Lotto> lottos) {
+        Map<Rank,Integer> result = calculateWinningResult(winningLotto, lottos, bonusNumber);
         printWinningStatistics(result);
-        printWinningResult(result, manager, amount);
+        printWinningResult(result);
     }
 
-    public Map<Rank,Integer> calculateWinningResult(Lotto winningLotto, List<Lotto> lottos, int bonusNumber, LottoResultManager manager) {
+    private Map<Rank,Integer> calculateWinningResult(Lotto winningLotto,List<Lotto> lottos, int bonusNumber) {
         Map<Rank,Integer> result = setResultMap();
         for (Lotto lotto : lottos) {
             Rank rank = manager.getLottoRank(winningLotto, lotto, bonusNumber);
@@ -73,22 +89,14 @@ public class LottoController {
         return returningMap;
     }
 
-    public List<Lotto> createLottos(LottoAmount amount) {
-        List<Lotto> returningLottos = new ArrayList<>();
-        for (int lottoNumber = 0; lottoNumber < amount.calculateLottoCount(); lottoNumber++) {
-            returningLottos.add(new Lotto(RandomNumbers.generateRandomNumbers()));
-        }
-        return returningLottos;
-    }
-
-    public void printWinningStatistics(Map<Rank,Integer> result){
+    private void printWinningStatistics(Map<Rank,Integer> result){
         OutputView.printWinningStatisticsTwoLines();
         for (int i = Rank.values().length - 1; i >= 0; i--) {
             Rank.printResultMsg(Rank.values()[i],result.get(Rank.values()[i]));
         }
     }
 
-    public void printWinningResult(Map<Rank,Integer> result, LottoResultManager manager, LottoAmount amount){
+    private void printWinningResult(Map<Rank,Integer> result){
         int totalWinningAmount = 0;
         for (Rank rank : result.keySet()) {
             totalWinningAmount += rank.getWinPrice() * result.get(rank);

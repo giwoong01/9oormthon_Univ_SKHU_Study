@@ -29,12 +29,14 @@ public enum Rank {
             OutputView.printWinningStatistics(rank.resultMsg, count);
         }
     }
+
     public int getWinPrice() {
         return winPrice;
     }
     public int getWinCount() {
         return winCount;
     }
+
     public static Rank provideRank(int winCount, boolean matchBonus) {
         if (winCount < FIFTH.winCount) {
             return NONE;

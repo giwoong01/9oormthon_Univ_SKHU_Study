@@ -1,12 +1,12 @@
 package lotto.view;
 
 public class OutputView {
-    private static final String PURCHASED_LOTTOS = "개를 구매했습니다.";
-    private static final String WINNING_STATISTICS = "당첨 통계\n" +
-            "---";
+    private static final String PURCHASED_LOTTOS = "\n%d개를 구매했습니다.\n";
+    private static final String WINNING_STATISTICS = "\n당첨 통계\n---";
+    private static final String EARNING_RATE = "총 수익률은 %s입니다.";
 
     public static void printLottoCount(int count) {
-        System.out.println("\n" + count + PURCHASED_LOTTOS);
+        System.out.printf(PURCHASED_LOTTOS, count);
     }
 
     public static void printWinningStatisticsTwoLines() {
@@ -14,10 +14,10 @@ public class OutputView {
     }
 
     public static void printWinningStatistics(String message, int count) {
-        System.out.println(message + " - " + count + "개");
+        System.out.printf("%s - %d개\n", message, count);
    }
 
     public static void printEarningRate(double earningRate) {
-        System.out.println("총 수익률은 " + String.format("%.1f%%", earningRate * 100) + "입니다.");
+        System.out.printf(EARNING_RATE, String.format("%.1f%%", earningRate));
     }
 }

@@ -5,6 +5,7 @@ import lotto.view.Exceptions;
 public class LottoAmount {
     private static final int LOTTO_PRICE = 1000;
     private final int price;
+
     public LottoAmount(int inputPrice) {
         validateValidPrice(inputPrice);
         validateIndivisiblePrice(inputPrice);

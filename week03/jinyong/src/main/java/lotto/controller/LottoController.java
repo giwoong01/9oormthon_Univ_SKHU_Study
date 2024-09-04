@@ -13,10 +13,12 @@ public class LottoController {
 
     private final LottoResultManager manager;
     private final LottoAmount amount;
+    private final List<Lotto> userLottos;
 
     public LottoController() {
         manager = new LottoResultManager();
         amount = setLottoAmount();
+        userLottos = createLottos();
     }
 
     private LottoAmount setLottoAmount() {
@@ -28,36 +30,33 @@ public class LottoController {
     }
 
     public void run() {
-        List<Lotto> userLottos = createLottos(amount);
-        printLottos(userLottos);
-        processLottoResult(userLottos);
+        printLottos();
+        processLottoResult();
     }
 
-    private List<Lotto> createLottos(LottoAmount amount) {
+    private List<Lotto> createLottos() {
         List<Lotto> returningLottos = new ArrayList<>();
-        Lotto lotto;
         for (int lottoNumber = 0; lottoNumber < amount.calculateLottoCount(); lottoNumber++) {
-            lotto = new Lotto(RandomNumbers.generateRandomNumbers());
-            returningLottos.add(lotto);
+            returningLottos.add(new Lotto(RandomNumbers.generateRandomNumbers()));
         }
         return returningLottos;
     }
 
-    private void printLottos(List<Lotto> lottos) {
-        OutputView.printLottoCount(lottos.size());
-        lottos.stream()
+    private void printLottos() {
+        OutputView.printLottoCount(userLottos.size());
+        userLottos.stream()
                 .map(Lotto::getNumbers)
                 .forEach(System.out::println);
     }
 
-    private void processLottoResult(List<Lotto> userLottos) {
+    private void processLottoResult() {
         try {
             List<Integer> winningNumbers = InputView.inputWinningNumbers();
             int bonusNumber = InputView.inputBonusNumber();
             Lotto winningLotto = createWinningLottoWithBonusNumber(winningNumbers, bonusNumber);
             printLottoResult(winningLotto, bonusNumber, userLottos);
         } catch (IllegalArgumentException e) {
-            processLottoResult(userLottos);
+            processLottoResult();
         }
     }
 
@@ -101,6 +100,6 @@ public class LottoController {
         for (Rank rank : result.keySet()) {
             totalWinningAmount += rank.getWinPrice() * result.get(rank);
         }
-        OutputView.printEarningRate(manager.calculateEarningRate(amount.calculateLottoCount() * 1000, totalWinningAmount));
+        OutputView.printEarningRate(manager.calculateEarningRate(amount.calculateLottoCount() * 1000, totalWinningAmount) * 100);
     }
 }

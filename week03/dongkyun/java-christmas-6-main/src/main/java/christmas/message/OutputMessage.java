@@ -15,7 +15,8 @@ public enum OutputMessage {
     WON("원"),
     BENEFIT_DETAILS("{0}: -{1}원%n"),
     ORDER_ITEM_FORMAT("{0} {1}개%n"),
-    NOTHING("없음\n");
+    NOTHING("없음\n"),
+    HYPHEN("-");
 
     private final String message;
 

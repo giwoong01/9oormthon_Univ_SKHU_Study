@@ -84,7 +84,7 @@ public class OutputView {
     }
 
     private String formatPriceWithHyphen(int price) {
-        return "-" + numberFormat.format(price);
+        return OutputMessage.HYPHEN.getMessage() + numberFormat.format(price);
     }
 
     private String formatPrice(int price) {

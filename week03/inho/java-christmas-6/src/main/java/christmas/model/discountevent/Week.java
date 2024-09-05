@@ -46,7 +46,7 @@ public class Week extends Event {
 
     private int calculateOrderSizeByManus(List<Menu> menus, MenuKind menuKind) {
         return menus.stream()
-                .filter(menu -> menu.checkManuKind(menuKind))
+                .filter(menu -> menu.isMenuKind(menuKind))
                 .mapToInt(Menu::getSize)
                 .sum();
     }

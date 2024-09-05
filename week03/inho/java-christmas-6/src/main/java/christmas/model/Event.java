@@ -17,6 +17,10 @@ public class Event {
         return discountPrice * DISCOUNT_MULTIPLIER;
     }
 
+    public String getEventName() {
+        return eventName.getName();
+    }
+
     @Override
     public String toString() {
         return eventName.getName() + ": " + formatPrice(discountPrice * DISCOUNT_MULTIPLIER) + "원";

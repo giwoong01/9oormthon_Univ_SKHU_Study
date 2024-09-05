@@ -15,12 +15,16 @@ public class MenuValidator {
     private static final int MIN_ORDER = 1;
     private static final int MAX_ORDER = 20;
     private static final int SPLIT_LIMIT = -1; // 실제 split 메서드 안에 두 번째 매개변수 이름
+    public static final String EMPTY_STRING = "";
+    public static final String SINGLE_SPACE = " ";
+    public static final String COMMA = ",";
+    public static final String HYPHEN = "-";
 
     public boolean validateMenu(String otherString) {
         orders = new LinkedHashMap<>();
         menus = new ArrayList<>();
 
-        otherString = otherString.replaceAll(" ", "");
+        otherString = otherString.replaceAll(SINGLE_SPACE, EMPTY_STRING);
 
         return validOtherString(otherString) && validContainUsingMenu(orders) &&
                 validLessMinOverMax(menus) && validOrderOnlyDrink(menus);
@@ -38,12 +42,12 @@ public class MenuValidator {
     }
 
     private void parsingAndSettingOrderString(String otherString) {
-        List<String> orderStrings = Arrays.stream(otherString.split(",", SPLIT_LIMIT)).toList();
+        List<String> orderStrings = Arrays.stream(otherString.split(COMMA, SPLIT_LIMIT)).toList();
         orderStrings.forEach(this::settingOrderMap);
     }
 
     private void settingOrderMap(String orderString) {
-        String[] order = orderString.split("-", SPLIT_LIMIT);
+        String[] order = orderString.split(HYPHEN, SPLIT_LIMIT);
         int size = Integer.parseInt(order[1]);
 
         if (size <= 0)
@@ -102,7 +106,7 @@ public class MenuValidator {
 
     private boolean isAllDrinkMenu(List<Menu> menus) {
         return menus.stream()
-                .allMatch(menu -> menu.checkManuKind(MenuKind.DRINK));
+                .allMatch(menu -> menu.isMenuKind(MenuKind.DRINK));
     }
 
 
@@ -111,8 +115,8 @@ public class MenuValidator {
     }
 
     public String getErrorMessage() {
-        if (errorMessage == null){
-            return "";
+        if (errorMessage == null) {
+            return EMPTY_STRING;
         }
 
         return errorMessage.toString();

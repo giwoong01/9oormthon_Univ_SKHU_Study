@@ -2,6 +2,8 @@ package christmas.view;
 
 
 import christmas.constant.PrintMessage;
+import christmas.dto.EventInfoDto;
+import christmas.dto.MenuInfoDto;
 import christmas.model.Event;
 import christmas.model.Menu;
 
@@ -19,14 +21,17 @@ public class OutputView {
         if (beforeDiscountTotalPrice < EVENT_MIN_PRICE) {
             System.out.println(PrintMessage.ORDER_LESS_MIN_PRICE);
         }
+
         System.out.println();
     }
 
-    public void printTotalMenu(List<Menu> menus) {
+    public void printTotalMenu(List<MenuInfoDto> menus) {
         System.out.println(PrintMessage.TOTAL_MENU.getMessage());
-        for (Menu menu : menus) {
+
+        for (MenuInfoDto menu : menus) {
             System.out.println(menu.toString());
         }
+
         System.out.println();
     }
 
@@ -42,7 +47,7 @@ public class OutputView {
         System.out.println();
     }
 
-    public void printBenefit(List<Event> events) {
+    public void printBenefit(List<EventInfoDto> events) {
         System.out.println(PrintMessage.BENEFIT.getMessage());
 
         if (events.isEmpty()) {
@@ -51,9 +56,10 @@ public class OutputView {
 
             return;
         }
-        for (Event event : events) {
+        for (EventInfoDto event : events) {
             System.out.println(event.toString());
         }
+
         System.out.println();
     }
 
@@ -76,7 +82,7 @@ public class OutputView {
 
     public static String formatPrice(int price) {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-        
+
         return numberFormat.format(price);
     }
 }

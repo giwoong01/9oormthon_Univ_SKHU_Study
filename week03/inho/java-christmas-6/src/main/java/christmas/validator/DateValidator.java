@@ -8,6 +8,7 @@ public class DateValidator {
     private ErrorMessage errorMessage;
     public static final int MIN_DATE = 1;
     public static final int MAX_DATE = 31;
+    public static final String EMPTY_STRING = "";
 
     public boolean validateDate(String date) {
         return validDateByStringDate(date) && validLessMinOverMaxByIntegerDate(integerDate);
@@ -43,8 +44,9 @@ public class DateValidator {
 
     public String getErrorMessage() {
         if (errorMessage == null) {
-            return "";
+            return EMPTY_STRING;
         }
+
         return errorMessage.toString();
     }
 }

@@ -9,7 +9,7 @@ public class Menu {
     private final int size;
 
     public Menu(String menuName, int size) {
-        if(!checkMenuKind(menuName))
+        if (!checkMenuKind(menuName))
             throw new IllegalArgumentException();
 
         this.size = size;
@@ -26,8 +26,12 @@ public class Menu {
         return size;
     }
 
-    public boolean checkManuKind(MenuKind menuKind) {
-        return menuKind == menuConstant.getMenuKind();
+    public String getMenuConstant() {
+        return menuConstant.getMenuName();
+    }
+
+    public boolean isMenuKind(MenuKind menuKind) {
+        return menuKind != menuConstant.getMenuKind();
     }
 
     public int getManuPrice() {
@@ -36,6 +40,6 @@ public class Menu {
 
     @Override
     public String toString() {
-        return menuConstant.getMenuName() + " "  + size + "개";
+        return menuConstant.getMenuName() + " " + size + "개";
     }
 }

@@ -52,14 +52,14 @@ public class EventManager {
 
     private void checkWeekEvent(int date, List<Menu> menus) {
         if (menus.stream()
-                .allMatch(this::checkWeekEventKindNotContain)){
+                .allMatch(this::checkWeekEventKindNotContain)) {
             return;
         }
         events.add(new Week(date, menus));
     }
 
     private boolean checkWeekEventKindNotContain(Menu menu) {
-        return !menu.checkManuKind(MenuKind.DESSERT) && !menu.checkManuKind(MenuKind.MAIN);
+        return menu.isMenuKind(MenuKind.DESSERT) && menu.isMenuKind(MenuKind.MAIN);
     }
 
     private void checkSpecialDayEvent(int date) {

@@ -1,6 +1,7 @@
 package baseball.controller;
 
 import baseball.model.BaseballReferee;
+import baseball.model.InputValidator;
 import baseball.view.InputView;
 import baseball.view.OutputView;
 
@@ -12,11 +13,13 @@ public class BaseballGame {
     private final BaseballReferee baseballReferee;
     private final OutputView outputView;
     private final InputView inputView;
+    private final InputValidator inputValidator;
 
     public BaseballGame() {
         this.baseballReferee = new BaseballReferee();
         this.outputView = new OutputView();
         this.inputView = new InputView();
+        this.inputValidator = new InputValidator();
     }
 
     public void settingGame() {
@@ -50,7 +53,7 @@ public class BaseballGame {
     public String getUserInput() {
         outputView.printInputNumber();
         String input = inputView.inputNumber();
-        baseballReferee.validateInput(input);
+        inputValidator.validateInput(input);
         return input;
     }
 

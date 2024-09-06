@@ -1,8 +1,7 @@
 package lotto.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class LottoResultManager {
 
@@ -24,5 +23,11 @@ public class LottoResultManager {
         return profitRate;
     }
 
-
+    public Map<Rank,Integer> setResultMap(){
+        Map<Rank,Integer> returningMap = new LinkedHashMap<>();
+        for (Rank rank : Rank.values()) {
+            returningMap.put(rank, 0);
+        }
+        return returningMap;
+    }
 }

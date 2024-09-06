@@ -7,6 +7,8 @@ public enum Exceptions {
     MUST_BE_OVER_1000("[ERROR] 로또 구매 금액은 1000원 이상이어야 합니다."),
     NOT_DIVISIBLE_BY_THOUSAND("[ERROR] 로또 구매 금액은 1000원 단위로만 가능합니다."),
     ONLY_INPUT_NUMBER("[ERROR] 숫자만 입력할 수 있습니다."),
+    OUT_OF_RANGE("[ERROR] 로또 번호는 1부터 45까지의 숫자만 가능합니다."),
+    BONUS_OUT_OF_RANGE("[ERROR] 보너스 번호는 1부터 45까지의 숫자만 가능합니다.")
 
     ;
 
@@ -42,5 +44,13 @@ public enum Exceptions {
 
     public static void msgOnlyInputNumber() {
         System.out.println(ONLY_INPUT_NUMBER.getMessage());
+    }
+
+    public static void msgOutOfRange() {
+        System.out.println(OUT_OF_RANGE.getMessage());
+    }
+
+    public static void msgBonusOutOfRange() {
+        System.out.println(BONUS_OUT_OF_RANGE.getMessage());
     }
 }

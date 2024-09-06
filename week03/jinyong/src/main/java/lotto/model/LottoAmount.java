@@ -1,6 +1,7 @@
 package lotto.model;
 
 import lotto.view.Exceptions;
+import lotto.view.InputView;
 
 public class LottoAmount {
     private static final int LOTTO_PRICE = 1000;
@@ -28,4 +29,11 @@ public class LottoAmount {
             throw new IllegalArgumentException();
         }
     }
-}
+
+    public static LottoAmount setLottoAmount() {
+        try {
+            return new LottoAmount(InputView.inputPrice());
+        } catch (IllegalArgumentException e) {
+            return setLottoAmount();
+        }
+    }}

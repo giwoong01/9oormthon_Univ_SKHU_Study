@@ -13,6 +13,12 @@ public class LottoController {
     private final InputView inputView;
     private final OutputView outputView;
 
+    private static final int FIRST_PRIZE = 2000000000;
+    private static final int SECOND_PRIZE = 30000000;
+    private static final int THIRD_PRIZE = 1500000;
+    private static final int FOURTH_PRIZE = 50000;
+    private static final int FIFTH_PRIZE = 5000;
+
     public LottoController() {
         inputView = new InputView();
         outputView = new OutputView();
@@ -38,7 +44,7 @@ public class LottoController {
         List<Integer> winningNumbers = getWinningNumbers();
         int bonusNumber = getBonusNumber(winningNumbers);
 
-        Map<String, Integer> results = calculateWinnings(lottoList, winningNumbers, bonusNumber);
+        Map<String, Integer> results = calculateWinning(lottoList, winningNumbers, bonusNumber);
         double earningsRate = calculateRate(results, amount);
 
         outputView.printResults(results, earningsRate);
@@ -56,7 +62,7 @@ public class LottoController {
         return bonusNumber;
     }
 
-    private Map<String, Integer> calculateWinnings(List<Lotto> lottoList, List<Integer> winningNumbers, int bonusNumber) {
+    private Map<String, Integer> calculateWinning(List<Lotto> lottoList, List<Integer> winningNumbers, int bonusNumber) {
         Map<String, Integer> results = new HashMap<>();
         results.put("1등", 0);
         results.put("2등", 0);
@@ -85,11 +91,11 @@ public class LottoController {
     }
 
     private double calculateRate(Map<String, Integer> results, int totalAmount) {
-        int totalEarnings = results.get("1등") * 2000000000 +
-                results.get("2등") * 30000000 +
-                results.get("3등") * 1500000 +
-                results.get("4등") * 50000 +
-                results.get("5등") * 5000;
+        int totalEarnings = results.get("1등") * FIRST_PRIZE +
+                results.get("2등") * SECOND_PRIZE +
+                results.get("3등") * THIRD_PRIZE +
+                results.get("4등") * FOURTH_PRIZE +
+                results.get("5등") * FIFTH_PRIZE;
         return (double) totalEarnings / totalAmount * 100;
     }
 

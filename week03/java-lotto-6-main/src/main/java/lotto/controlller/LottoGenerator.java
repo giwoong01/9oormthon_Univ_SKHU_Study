@@ -16,5 +16,6 @@ public class LottoGenerator {
         }
         return randomNumbers;
     }
+
 }
 

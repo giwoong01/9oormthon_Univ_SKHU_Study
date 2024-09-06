@@ -36,13 +36,13 @@ public class InputView {
     }
 
     private List<Integer> convertPickNumber(String input){
-        List<Integer> Picknumbers = new ArrayList<>();
+        List<Integer> pickNumbers = new ArrayList<>();
         String[] numbers = input.split(",");
 
         for(String number : numbers){
-            Picknumbers.add(Integer.parseInt(number.trim()));
+            pickNumbers.add(Integer.parseInt(number.trim()));
         }
-        return Picknumbers;
+        return pickNumbers;
     }
 
     public Integer inputBonusNumber(){

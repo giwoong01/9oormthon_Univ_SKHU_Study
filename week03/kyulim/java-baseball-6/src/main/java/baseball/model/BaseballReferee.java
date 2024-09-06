@@ -45,28 +45,38 @@ public class BaseballReferee {
     private int countBalls(List<Integer> computerNumber, List<Integer> userNumber) {
         int balls = 0;
         for (int i = 0; i < 3; i++) {
+            if (computerNumber.get(i).equals(userNumber.get(i)))
+                continue;
+
             if (computerNumber.contains(userNumber.get(i)))
                 balls++;
-
-            if (computerNumber.get(i).equals(userNumber.get(i)))
-                balls--;
         }
         return balls;
     }
 
     public void validateInput(String input) {
-        if (input.length() != 3) {
-            throw new IllegalArgumentException("잘못된 입력입니다.");
-        }
+        validateLength(input);
+        validateNumberRange(input);
+        validateDuplicates(input);
+    }
 
+    private void validateLength(String input) {
+        if (input.length() != 3) {
+            throw new IllegalArgumentException("입력은 3자리여야 합니다.");
+        }
+    }
+
+    private void validateNumberRange(String input) {
         for (char ch : input.toCharArray()) {
             if (ch < '1' || ch > '9') {
-                throw new IllegalArgumentException("잘못된 입력입니다.");
+                throw new IllegalArgumentException("입력은 1에서 9 사이의 숫자여야 합니다.");
             }
         }
+    }
 
+    private void validateDuplicates(String input) {
         if (hasDuplicateCharacters(input)) {
-            throw new IllegalArgumentException("잘못된 입력입니다.");
+            throw new IllegalArgumentException("중복된 숫자가 있습니다.");
         }
     }
 

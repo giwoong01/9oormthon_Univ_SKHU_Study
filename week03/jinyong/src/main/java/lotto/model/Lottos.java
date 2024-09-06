@@ -1,7 +1,6 @@
 package lotto.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public record Lottos(List<Lotto> lottos) {
@@ -14,12 +13,12 @@ public record Lottos(List<Lotto> lottos) {
         for (int i = 0; i < count; i++) {
             lottos.add(new Lotto(RandomNumbers.generateRandomNumbers()));
         }
-        return new Lottos(Collections.unmodifiableList(lottos));
+        return new Lottos(lottos);
     }
 
     @Override
     public List<Lotto> lottos() {
-        return new ArrayList<>(lottos);
+        return lottos;
     }
 
     public int size() {

@@ -7,9 +7,15 @@ import lotto.view.OutputView;
 import java.util.List;
 
 public class LottoController {
-    private final InputView inputView = new InputView();
-    private final OutputView outputView = new OutputView();
+    private final InputView inputView;
+    private final OutputView outputView;
 
+    public LottoController() {
+        this.inputView = new InputView();
+        this.outputView = new OutputView();
+    }
+
+    // TODO: 일급 컬렉션
     public void run() {
         PurchaseAmount purchaseAmount = inputView.receivePurchaseAmount();
 

@@ -30,7 +30,7 @@ public enum PrizeRank {
         return matchCount;
     }
 
-    public static PrizeRank from(int matchCount, boolean bonusMatch) {
+    public static PrizeRank of(int matchCount, boolean bonusMatch) {
         if (matchCount == 6) {
             return FIRST_PRIZE;
         }

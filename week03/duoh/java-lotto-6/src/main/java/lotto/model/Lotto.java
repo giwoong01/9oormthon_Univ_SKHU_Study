@@ -3,18 +3,17 @@ package lotto.model;
 import lotto.view.ErrorMessage;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Lotto {
     public static final int MIN_LOTTO_NUMBER = 1;
     public static final int MAX_LOTTO_NUMBER = 45;
     public static final int LOTTO_NUMBER_COUNT = 6;
-    private List<Integer> lottoNumbers;
+    private final List<Integer> lottoNumbers;
 
     public Lotto(List<Integer> lottoNumbers) {
         validate(lottoNumbers);
-        List<Integer> sortedLottoNumbers = new ArrayList<>(lottoNumbers);
-        Collections.sort(sortedLottoNumbers);
-        this.lottoNumbers = sortedLottoNumbers;
+        this.lottoNumbers = lottoNumbers.stream().sorted().collect(Collectors.toList());
     }
 
     private void validate(List<Integer> lottoNumbers) {

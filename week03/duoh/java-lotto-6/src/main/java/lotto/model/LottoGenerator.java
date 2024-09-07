@@ -15,14 +15,7 @@ public class LottoGenerator {
 
         for (int i = 0; i < lottoCount; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(MIN_LOTTO_NUMBER, MAX_LOTTO_NUMBER, LOTTO_NUMBER_COUNT);
-
-            try {
-                Lotto lotto = new Lotto(numbers);
-                lottos.add(lotto);
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-                i--;
-            }
+            lottos.add(new Lotto(numbers));
         }
 
         return lottos;

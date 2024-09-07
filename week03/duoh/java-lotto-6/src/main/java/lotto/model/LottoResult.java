@@ -19,7 +19,7 @@ public class LottoResult {
                     .count();
             boolean bonusMatch = lotto.getLottoNumbers().contains(winningNumbers.getBonusNumber());
 
-            PrizeRank rank = PrizeRank.from(matchCount, bonusMatch);
+            PrizeRank rank = PrizeRank.of(matchCount, bonusMatch);
             rankCounts.put(rank, rankCounts.getOrDefault(rank, 0) + 1);
             totalPrize += rank.getPrize();
         }

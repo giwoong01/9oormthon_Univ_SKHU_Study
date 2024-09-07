@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OutputView {
-
+    // TODO: MVC 패턴에 맞게 수정 필요
     public void printGeneratedLottoNumbers(List<Lotto> lottos) {
         System.out.println("\n" + lottos.size() + "개를 구매했습니다.");
         for (Lotto lotto : lottos) {

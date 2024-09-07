@@ -1,6 +1,7 @@
 package lotto.controlller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +15,7 @@ public class LottoGenerator {
                 randomNumbers.add(number);
             }
         }
+        Collections.sort(randomNumbers);
         return randomNumbers;
     }
 

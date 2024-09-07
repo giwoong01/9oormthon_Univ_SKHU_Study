@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lotto.domain.Lotto;
+import lotto.domain.LottoGenerator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -26,7 +27,7 @@ public class LottoController {
 
     private List<Lotto> generateLottoList(int amount) {
         List<Lotto> lottoList = new ArrayList<>();
-        for(int i=0;i<amount/1000;i++){
+        for(int i=0; i<amount/1000; i++){
             lottoList.add(new Lotto(LottoGenerator.generateWinningNumber()));
         }
         return lottoList;

@@ -34,7 +34,11 @@ public class LottoController {
     }
 
     private int getLottoPrice() {
-        return inputView.printStartMessage();
+        int amount =  inputView.printStartMessage();
+        if (amount % 1000 != 0) {
+            throw new IllegalArgumentException("[ERROR] 로또 구입 금액은 1000원 단위로 입력해주세요.");
+        }
+        return amount;
     }
 
     public void gameStart() {

@@ -16,10 +16,12 @@ public class LottoController {
 
     private final InputView inputView;
     private final OutputView outputView;
+    private final LottoValidator lottoValidator;
 
     public LottoController() {
         inputView = new InputView();
         outputView = new OutputView();
+        lottoValidator = new LottoValidator();
     }
 
     private List<Lotto> generateLottoList(int amount) {
@@ -32,7 +34,7 @@ public class LottoController {
 
     private int getLottoPrice() {
         int amount = inputView.printStartMessage();
-        LottoValidator.validateLottoPrice(amount);
+        lottoValidator.validateLottoPrice(amount);
         return amount;
     }
 
@@ -56,7 +58,7 @@ public class LottoController {
 
     private int getBonusNumber(List<Integer> winningNumbers) {
         int bonusNumber = inputView.inputBonusNumber();
-        LottoValidator.validateBonusNumber(bonusNumber, winningNumbers);
+        lottoValidator.validateBonusNumber(bonusNumber, winningNumbers);
         return bonusNumber;
     }
 

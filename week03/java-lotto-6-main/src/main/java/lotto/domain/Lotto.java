@@ -5,14 +5,15 @@ import java.util.List;
 
 public class Lotto {
     private final List<Integer> numbers;
+    private final LottoValidator lottoValidator = new LottoValidator();
 
     public Lotto(List<Integer> numbers) {
-        LottoValidator.validate(numbers);
+        lottoValidator.validate(numbers);
         this.numbers = numbers;
     }
 
     public List<Integer> getNumbers() {
-        return numbers;
+        return List.copyOf(numbers);
     }
 
     public int countMatchNumber(List<Integer> winningNumbers) {

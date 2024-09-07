@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import lotto.domain.Lotto;
 import lotto.domain.LottoGenerator;
+import lotto.domain.LottoValidator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -27,17 +29,15 @@ public class LottoController {
 
     private List<Lotto> generateLottoList(int amount) {
         List<Lotto> lottoList = new ArrayList<>();
-        for(int i=0; i<amount/1000; i++){
+        for (int i = 0; i < amount / 1000; i++) {
             lottoList.add(new Lotto(LottoGenerator.generateWinningNumber()));
         }
         return lottoList;
     }
 
     private int getLottoPrice() {
-        int amount =  inputView.printStartMessage();
-        if (amount % 1000 != 0) {
-            throw new IllegalArgumentException("[ERROR] 로또 구입 금액은 1000원 단위로 입력해주세요.");
-        }
+        int amount = inputView.printStartMessage();
+        LottoValidator.validateLottoPrice(amount);
         return amount;
     }
 
@@ -61,9 +61,7 @@ public class LottoController {
 
     private int getBonusNumber(List<Integer> winningNumbers) {
         int bonusNumber = inputView.inputBonusNumber();
-        if (winningNumbers.contains(bonusNumber)) {
-            throw new RuntimeException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
-        }
+        LottoValidator.validateBonusNumber(bonusNumber, winningNumbers);  // 유효성 검사 호출
         return bonusNumber;
     }
 
@@ -105,7 +103,6 @@ public class LottoController {
         return results;
     }
 
-
     private double calculateRate(Map<String, Integer> results, int totalAmount) {
         int totalEarnings = results.get("1등") * FIRST_PRIZE +
                 results.get("2등") * SECOND_PRIZE +
@@ -114,5 +111,4 @@ public class LottoController {
                 results.get("5등") * FIFTH_PRIZE;
         return (double) totalEarnings / totalAmount * 100;
     }
-
 }

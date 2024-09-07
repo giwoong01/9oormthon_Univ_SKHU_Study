@@ -34,9 +34,6 @@ public enum Prize {
                 return prize;
             }
         }
-        if (matchCount < 3) {
-            return NONE;
-        }
-        return null;
+        return NONE;
     }
 }

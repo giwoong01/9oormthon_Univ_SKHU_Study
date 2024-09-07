@@ -1,23 +1,13 @@
 package lotto.domain;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import camp.nextstep.edu.missionutils.Randoms;
 import java.util.List;
-import java.util.Random;
 
 public class LottoGenerator {
     public static List<Integer> generateWinningNumber() {
-        List<Integer> randomNumbers = new ArrayList<>();
-        Random random = new Random();
-        while (randomNumbers.size() < 6) {
-            int number = random.nextInt(45) + 1;
-            if (!randomNumbers.contains(number)) {
-                randomNumbers.add(number);
-            }
-        }
-        Collections.sort(randomNumbers);
+        List<Integer> randomNumbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
+        randomNumbers.sort(Integer::compareTo);
         return randomNumbers;
     }
-
 }
 

@@ -18,10 +18,10 @@ public class InputView {
 
     public int printStartMessage(){
         System.out.println(INPUT_START_MESSAGE);
-        return toInt(Console.readLine());
+        return converStringtoInt(Console.readLine());
 
     }
-    private int toInt(String input){
+    private int converStringtoInt(String input){
         try {
             return Integer.parseInt(input);
         }
@@ -47,6 +47,6 @@ public class InputView {
 
     public Integer inputBonusNumber(){
         System.out.println(INPUT_BONUS_NUMBER_MESSAGE);
-        return toInt(Console.readLine());
+        return converStringtoInt(Console.readLine());
     }
 }

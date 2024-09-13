@@ -1,0 +1,179 @@
+.loginBox {
+  width: 360px;
+  height: 440px;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  .innerBox {
+    width: 100%;
+    height: 100%;
+    .top {
+      width: 100%;
+      height: 20%;
+      .delBtn {
+        width: 100%;
+        height: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+      }
+      .delBtn:hover {
+        cursor: pointer;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80%;
+        img {
+          width: 130px;
+          height: 26px;
+          background-size: cover;
+        }
+      }
+    }
+    .signupBox {
+      width: 100%;
+      height: 60%;
+
+      .inputContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 50%;
+        .inputBox {
+          width: 100%;
+          height: 80%;
+          margin-bottom: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding-left: 10px;
+          display: flex;
+          align-items: center;
+          input {
+            width: 90%;
+            height: 100%;
+            outline: none;
+            border: none;
+          }
+          .showBtn {
+            width: 14px;
+            height: 14px;
+            img {
+              width: 100%;
+              height: 100%;
+              background-size: cover;
+            }
+          }
+          .showBtn:hover {
+            cursor: pointer;
+          }
+        }
+        .inputBox:focus-within {
+          border-color: #00c471;
+        }
+      }
+      .loginBtn {
+        border: none;
+        border-radius: 5px;
+        margin-top: 12px;
+        width: 100%;
+        height: 20%;
+        background-color: #00c471;
+        color: #fff;
+      }
+      .loginBtn:hover {
+        cursor: pointer;
+      }
+      .linkBox {
+        padding: 0 22px;
+        margin-top: 12px;
+        width: 100%;
+        height: 10%;
+        .linkItem {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          align-content: space-evenly;
+          font-size: 0.8rem;
+          color: gray;
+          a {
+            color: gray;
+            text-underline-offset: 4px;
+          }
+          span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 12px;
+          }
+        }
+      }
+    }
+    .socialBox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      height: 20%;
+
+      .socialLine {
+        position: relative;
+        bottom: -8px;
+        display: block;
+        margin: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #f1f3f5;
+        border: none;
+      }
+      span {
+        padding: 0 8px;
+        margin-bottom: 16px;
+        font-size: 11px;
+        line-height: 16px;
+        letter-spacing: -0.3px;
+        color: #abb0b5;
+        z-index: 1;
+        background-color: #fff;
+      }
+      .socialItem {
+        display: flex;
+        margin: auto;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+
+        div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          border-radius: 5px;
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        }
+        div:hover {
+          cursor: pointer;
+        }
+        .kakao {
+          background-color: #fee500;
+          color: 000;
+
+          img {
+            width: 50%;
+            height: 50%;
+            background-size: cover;
+          }
+        }
+        .google {
+          img {
+            width: 50%;
+            height: 50%;
+            background-size: cover;
+          }
+        }
+      }
+    }
+  }
+}

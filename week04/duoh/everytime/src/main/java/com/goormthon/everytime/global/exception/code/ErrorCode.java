@@ -14,8 +14,12 @@ public enum ErrorCode {
     JSON_PARSE_ERROR(HttpStatus.BAD_REQUEST, "JSON 파싱 중 오류가 발생했습니다."),
 
     // 401 Unauthorized
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
+    INVALID_SIGNATURE(HttpStatus.UNAUTHORIZED, "유효하지 않은 서명입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 
     // 403 Forbidden
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "권한이 없습니다."),
 
     // 404 NOT FOUND
 

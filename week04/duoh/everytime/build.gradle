@@ -42,8 +42,7 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	// Swagger
-	implementation 'org.springdoc-openapi-starter-webmvc-ui:2.2.0'
-	testImplementation 'org.springdoc-openapi-starter-webmvc-api:2.2.0'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 }
 
 tasks.named('test') {

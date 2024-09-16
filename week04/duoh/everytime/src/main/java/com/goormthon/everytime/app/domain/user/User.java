@@ -1,16 +1,16 @@
 package com.goormthon.everytime.app.domain.user;
 
+import com.goormthon.everytime.app.domain.image.Image;
+import com.goormthon.everytime.app.domain.user.university.University;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class User {
 
@@ -21,9 +21,6 @@ public class User {
 
     @Column(name = "year", nullable = false, length = 2)
     private String year;
-
-    @Column(name = "university_name", nullable = false, length = 100)
-    private String universityName;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -44,15 +41,31 @@ public class User {
     @Column(name = "role_type", nullable = false)
     private RoleType roleType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_id", nullable = false)
+    private University university;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "anonym_image_id")
+    private Image anonymImage;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "real_image_id")
+    private Image realImage;
+
     @Builder
-    private User(String year, String universityName, String name, String nickName, String email, String id, String password, RoleType roleType) {
+    private User(String year, String name, String nickName, String email,
+                 String id, String password, RoleType roleType,
+                 University university, Image anonymImage, Image realImage) {
         this.year = year;
-        this.universityName = universityName;
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.id = id;
         this.password = password;
         this.roleType = roleType;
+        this.university = university;
+        this.anonymImage = anonymImage;
+        this.realImage = realImage;
     }
 }

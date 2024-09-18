@@ -24,6 +24,7 @@ public enum ErrorCode {
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "권한이 없습니다."),
 
     // 404 NOT FOUND
+    USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 아이디를 찾을 수 없습니다."),
 
     // 409 Conflict
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),

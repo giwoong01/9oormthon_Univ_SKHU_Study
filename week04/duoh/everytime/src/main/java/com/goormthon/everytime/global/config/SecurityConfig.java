@@ -21,6 +21,12 @@ public class SecurityConfig {
 
     private final TokenProvider tokenprovider;
 
+    private final String[] PERMIT_ALL_URLS = {
+            "user/join",
+            "swagger-ui/**",
+            "v3/api-docs/**"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -31,7 +37,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/api/v1/**", "swagger-ui/**", "v3/api-docs/**").permitAll()
+                        .requestMatchers(PERMIT_ALL_URLS).permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN") // 관리자만 해당 URL에 접근 가능
                         .anyRequest().authenticated()
                 )

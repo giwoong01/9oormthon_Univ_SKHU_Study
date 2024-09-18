@@ -12,9 +12,10 @@ public enum SuccessCode {
     // 200 OK
 
     // 201 Created
+    SIGNUP_USER_SUCCESS(HttpStatus.CREATED, "회원가입에 성공했습니다.");
 
     // 204 No Content
-    ;
+
     private final HttpStatus httpStatus;
     private final String message;
 }

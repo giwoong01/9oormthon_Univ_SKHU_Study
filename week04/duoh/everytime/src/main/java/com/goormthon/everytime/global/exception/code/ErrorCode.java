@@ -12,6 +12,8 @@ public enum ErrorCode {
     // 400 Bad Request
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "유효성 검사에 맞지 않습니다."),
     JSON_PARSE_ERROR(HttpStatus.BAD_REQUEST, "JSON 파싱 중 오류가 발생했습니다."),
+    PASSWORD_MISSMATCH(HttpStatus.BAD_REQUEST, "비밀번호를 다시 확인해주세요."),
+    INVALID_UNIVERSITY_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 대학명입니다."),
 
     // 401 Unauthorized
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
@@ -24,11 +26,13 @@ public enum ErrorCode {
     // 404 NOT FOUND
 
     // 409 Conflict
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
+    ID_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 아이디입니다.");
 
     // 500 Internal Server Exception
 
     // 503 Service Unavailable
-    ;
+
     private final HttpStatus httpStatus;
     private final String message;
 }

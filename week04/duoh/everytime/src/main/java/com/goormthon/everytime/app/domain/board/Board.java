@@ -1,6 +1,6 @@
 package com.goormthon.everytime.app.domain.board;
 
-import com.goormthon.everytime.app.domain.user.university.University;
+import com.goormthon.everytime.app.domain.user.University;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,8 +21,8 @@ public class Board {
     @Column(name = "board_name", nullable = false, length = 100)
     private BoardName boardName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "university_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "university", nullable = false)
     private University university;
 
     @Builder

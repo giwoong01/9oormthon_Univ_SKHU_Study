@@ -10,9 +10,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ControllerExceptionAdvice {
@@ -25,16 +25,18 @@ public class ControllerExceptionAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResTemplate<String>> handleValidationExceptions(MethodArgumentNotValidException e) {
-        Map<String, String> errorMap = e.getBindingResult().getFieldErrors().stream()
-                .collect(Collectors.toMap(FieldError::getField,
-                        fieldError -> Optional.ofNullable(fieldError.getDefaultMessage()).orElse(ErrorCode.VALIDATION_ERROR.getMessage())));
+    public ResponseEntity<ApiResTemplate<Map<String, String>>> handleValidationExceptions(MethodArgumentNotValidException e) {
+        Map<String, String> errorMap = new HashMap<>();
+        for (FieldError error : e.getBindingResult().getFieldErrors()) {
+            errorMap.putIfAbsent(error.getField(), Optional.ofNullable(error.getDefaultMessage())
+                    .orElse(ErrorCode.VALIDATION_ERROR.getMessage()));
+        }
 
         return ResponseEntity
                 .status(ErrorCode.VALIDATION_ERROR.getHttpStatus())
-                .body(ApiResTemplate.<String>error(ErrorCode.VALIDATION_ERROR)
+                .body(ApiResTemplate.<Map<String, String>>error(ErrorCode.VALIDATION_ERROR)
                         .toBuilder()
-                        .data(convertMapToString(errorMap))
+                        .data(errorMap)
                         .build());
     }
 
@@ -43,11 +45,5 @@ public class ControllerExceptionAdvice {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiResTemplate.error(ErrorCode.JSON_PARSE_ERROR));
-    }
-
-    private String convertMapToString(Map<String, String> map) {
-        return map.entrySet().stream()
-                .map(entry -> entry.getKey() + " : " + entry.getValue())
-                .collect(Collectors.joining(", "));
     }
 }

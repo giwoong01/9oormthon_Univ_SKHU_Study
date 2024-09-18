@@ -1,7 +1,6 @@
 package com.goormthon.everytime.app.domain.user;
 
 import com.goormthon.everytime.app.domain.image.Image;
-import com.goormthon.everytime.app.domain.user.university.University;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,6 +20,10 @@ public class User {
 
     @Column(name = "year", nullable = false, length = 2)
     private String year;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "university", nullable = false)
+    private University university;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -42,10 +45,6 @@ public class User {
     private RoleType roleType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "university_id", nullable = false)
-    private University university;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "anonym_image_id")
     private Image anonymImage;
 
@@ -54,17 +53,16 @@ public class User {
     private Image realImage;
 
     @Builder
-    private User(String year, String name, String nickName, String email,
-                 String id, String password, RoleType roleType,
-                 University university, Image anonymImage, Image realImage) {
+    private User(String year, University university, String name, String nickName, String email,
+                 String id, String password, RoleType roleType, Image anonymImage, Image realImage) {
         this.year = year;
+        this.university = university;
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.id = id;
         this.password = password;
         this.roleType = roleType;
-        this.university = university;
         this.anonymImage = anonymImage;
         this.realImage = realImage;
     }

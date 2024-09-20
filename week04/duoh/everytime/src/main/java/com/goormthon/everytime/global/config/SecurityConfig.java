@@ -24,6 +24,9 @@ public class SecurityConfig {
     private final String[] PERMIT_ALL_URLS = {
             "user/join",
             "user/login",
+            "kakao/token",
+            "google/token",
+            "/auth",
             "swagger-ui/**",
             "v3/api-docs/**"
     };

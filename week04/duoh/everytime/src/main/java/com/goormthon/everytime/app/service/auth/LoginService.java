@@ -26,7 +26,7 @@ public class LoginService {
     @Transactional
     public ApiResTemplate<AuthResDto> login(LoginReqDto reqDto) {
         User user = userRepository.findById(reqDto.id())
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_ID_NOT_FOUND, ErrorCode.USER_ID_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
 
         if (!passwordEncoder.matches(reqDto.password(), user.getPassword())) {
             throw new CustomException(ErrorCode.PASSWORD_MISSMATCH, ErrorCode.PASSWORD_MISSMATCH.getMessage());

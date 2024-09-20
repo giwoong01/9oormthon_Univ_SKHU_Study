@@ -24,13 +24,14 @@ public enum ErrorCode {
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "권한이 없습니다."),
 
     // 404 NOT FOUND
-    USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 아이디를 찾을 수 없습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
 
     // 409 Conflict
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
-    ID_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 아이디입니다.");
+    ID_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 아이디입니다."),
 
     // 500 Internal Server Exception
+    FAILED_GET_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "토큰을 가져오는 데 실패했습니다.");
 
     // 503 Service Unavailable
 

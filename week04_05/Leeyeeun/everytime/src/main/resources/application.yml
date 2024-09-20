@@ -7,59 +7,53 @@ spring:
     username: ${spring.datasource.username}
     password: ${spring.datasource.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
+    jpa:
       hibernate:
-        format_sql: false
-        use_sql_comments: true
+        ddl-auto: create
+      show-sql: true
 
-  security:
-    oauth2:
-      client:
-        registration:
-          kakao:
-            client-id: ${KAKAO_CLIENT_ID}
-            client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: ${KAKAO_REDIRECT_URI}
-            client-name: Kakao
-            authorization-grant-type: authorization_code
-            client-authentication-method: client_secret_post
-            scope:
-              - profile_nickname
-          google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect-uri: ${GOOGLE_REDIRECT_URI}
-            client-name: Google
-            authorization-grant-type: authorization_code
-            client-authentication-method: client_secret_post
-            scope:
-              - email
-              - profile
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
+    security:
+      oauth2:
+        client:
+          registration:
+            kakao:
+              client-id: ${spring.datasource.security.oauth2.client.registration.kakao.client-id}
+              client-secret: ${spring.datasource.security.oauth2.client.registration.kakao.client-secret}
+              redirect-uri: ${spring.datasource.security.oauth2.client.registration.kakao.redirect-uri}
+              client-name: Kakao
+              authorization-grant-type: authorization_code
+              client-authentication-method: client_secret_post
+              scope:
+                - profile_nickname
+            google:
+              client-id: ${spring.datasource.security.oauth2.client.registration.google.client-id}
+              client-secret: ${spring.datasource.security.oauth2.client.registration.google.client-secret}
+              redirect-uri: ${spring.datasource.security.oauth2.client.registration.google.redirect-uri}
+              client-name: Google
+              authorization-grant-type: authorization_code
+              client-authentication-method: client_secret_post
+              scope:
+                - email
+                - profile
+          provider:
+            kakao:
+              authorization-uri: https://kauth.kakao.com/oauth/authorize
+              token-uri: https://kauth.kakao.com/oauth/token
+              user-info-uri: https://kapi.kakao.com/v2/user/me
+              user-name-attribute: id
 
 
 jwt:
-  secretKey: ${jwt.secretKey}
+  secretKey: ${spring.jwt.secretKey}
 
   access:
-    expiration: ${jwt.access.expiration}
-    header: ${jwt.access.header}
+    expiration: ${spring.jwt.access.expiration}
+    header: ${spring.jwt.access.header}
 
   refresh:
-    expiration: ${jwt.refresh.expiration}
-    header: ${jwt.refresh.header}
+    expiration: ${spring.jwt.refresh.expiration}
+    header: ${spring.jwt.refresh.header}
+
 
 cloud:
   aws:
@@ -80,3 +74,4 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+

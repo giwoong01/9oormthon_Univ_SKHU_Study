@@ -2,7 +2,7 @@ package org.skhu.everytime.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.skhu.everytime.domain.user.repository.UserRepository;
+import org.skhu.everytime.user.repository.UserRepository;
 import org.skhu.everytime.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import org.skhu.everytime.global.jwt.service.JwtService;
 import org.skhu.everytime.global.login.filter.CustomJsonUsernamePasswordAuthenticationFilter;
@@ -47,15 +47,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-//                .httpBasic().disable() // httpBasic 사용 X
-//                .csrf().disable() // csrf 보안 사용 X
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .formLogin().disable() // FormLogin 사용 X
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/sign-up").permitAll()
-                                .requestMatchers("/test").authenticated()
+                                .requestMatchers("/user/join").permitAll()
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                                 .anyRequest().authenticated()
                 )

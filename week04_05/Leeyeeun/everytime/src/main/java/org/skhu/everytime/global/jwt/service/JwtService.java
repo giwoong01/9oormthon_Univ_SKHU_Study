@@ -7,10 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.skhu.everytime.domain.user.repository.UserRepository;
+import org.skhu.everytime.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -19,7 +18,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Getter
 @Slf4j
-@Transactional
 public class JwtService {
 
     @Value("${jwt.secretKey}")
@@ -44,21 +42,15 @@ public class JwtService {
 
     private final UserRepository userRepository;
 
-    /**
-     * AccessToken 생성 메소드
-     */
     public String createAccessToken(String email) {
         Date now = new Date();
-        return JWT.create() // JWT 토큰을 생성하는 빌더 반환
-                .withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
-                .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
-                .withClaim(EMAIL_CLAIM, email) // 클레임 추가
-                .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, 비밀 키로 서명
+        return JWT.create()
+                .withSubject(ACCESS_TOKEN_SUBJECT)
+                .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
+                .withClaim(EMAIL_CLAIM, email)
+                .sign(Algorithm.HMAC512(secretKey));
     }
 
-    /**
-     * RefreshToken 생성 메소드
-     */
     public String createRefreshToken() {
         Date now = new Date();
         return JWT.create()
@@ -67,18 +59,12 @@ public class JwtService {
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
-    /**
-     * AccessToken 헤더에 실어서 보내기
-     */
     public void sendAccessToken(HttpServletResponse response, String accessToken) {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setHeader(accessHeader, accessToken);
         log.info("재발급된 Access Token : {}", accessToken);
     }
 
-    /**
-     * AccessToken + RefreshToken 헤더에 실어서 보내기
-     */
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
         setAccessTokenHeader(response, accessToken);
@@ -86,68 +72,49 @@ public class JwtService {
         log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
 
-    /**
-     * 헤더에서 RefreshToken 추출
-     */
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(refreshHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
-    /**
-     * 헤더에서 AccessToken 추출
-     */
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(accessHeader))
-                .filter(refreshToken -> refreshToken.startsWith(BEARER))
-                .map(refreshToken -> refreshToken.replace(BEARER, ""));
+                .filter(accessToken -> accessToken.startsWith(BEARER))
+                .map(accessToken -> accessToken.replace(BEARER, ""));
     }
 
-    /**
-     * AccessToken에서 Email 추출
-     */
     public Optional<String> extractEmail(String accessToken) {
         try {
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
-                    .build() // JWT verifier 생성
-                    .verify(accessToken) // accessToken을 검증
-                    .getClaim(EMAIL_CLAIM) // claim에서 이메일 추출
+                    .build()
+                    .verify(accessToken)
+                    .getClaim(EMAIL_CLAIM)
                     .asString());
         } catch (Exception e) {
-            log.error("액세스 토큰이 유효하지 않습니다.");
+            log.error("액세스 토큰이 유효하지 않습니다. {}", e.getMessage());
             return Optional.empty();
         }
     }
 
-    /**
-     * AccessToken 헤더 설정
-     */
     public void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
         response.setHeader(accessHeader, accessToken);
     }
 
-    /**
-     * RefreshToken 헤더 설정
-     */
     public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
         response.setHeader(refreshHeader, refreshToken);
     }
 
-    /**
-     * RefreshToken DB 저장(업데이트)
-     */
     public void updateRefreshToken(String email, String refreshToken) {
         userRepository.findByEmail(email)
                 .ifPresentOrElse(
                         user -> user.updateRefreshToken(refreshToken),
-                        () -> new IllegalStateException("일치하는 회원이 없습니다.")
+                        () -> {
+                            throw new RuntimeException("일치하는 회원이 없습니다.");
+                        }
                 );
     }
 
-    /**
-     * 토큰 유효성 검증
-     */
     public boolean isTokenValid(String token) {
         try {
             JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);

@@ -1,8 +1,8 @@
 package org.skhu.everytime.global.login.service;
 
 import lombok.RequiredArgsConstructor;
-import org.skhu.everytime.domain.user.User;
-import org.skhu.everytime.domain.user.repository.UserRepository;
+import org.skhu.everytime.user.User;
+import org.skhu.everytime.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

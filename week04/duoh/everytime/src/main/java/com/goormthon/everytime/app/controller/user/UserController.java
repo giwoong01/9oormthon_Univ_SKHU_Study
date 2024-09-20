@@ -20,7 +20,7 @@ public class UserController {
 
     private final UserInfoService userInfoService;
 
-    @GetMapping("user/profile")
+    @GetMapping("/user/profile")
     @Operation(
             summary = "사용자 프로필 조회",
             description = "현재 로그인된 사용자의 프로필을 조회합니다.",

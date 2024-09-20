@@ -26,7 +26,7 @@ public class AuthController {
     private final LoginService loginService;
     private final Map<String, OAuthService> oauthServices;
 
-    @PostMapping("user/join")
+    @PostMapping("/user/join")
     @Operation(
             summary = "자체 회원가입",
             description = "사용자로부터 회원가입에 필요한 정보를 입력받아 유효성 검사를 수행한 후, 회원가입을 처리합니다.",
@@ -42,7 +42,7 @@ public class AuthController {
         return ResponseEntity.status(data.getStatus()).body(data);
     }
 
-    @PostMapping("user/login")
+    @PostMapping("/user/login")
     @Operation(
             summary = "자체 로그인",
             description = "사용자가 입력한 아이디와 비밀번호를 기반으로 인증을 수행합니다. 인증에 성공하면 accessToken, refreshToken을 발급하여 반환합니다.",

@@ -22,11 +22,11 @@ public class SecurityConfig {
     private final TokenProvider tokenprovider;
 
     private final String[] PERMIT_ALL_URLS = {
-            "user/join",
-            "user/login",
-            "user/profile",
-            "kakao/token",
-            "google/token",
+            "/user/join",
+            "/user/login",
+            "/user/profile",
+            "/kakao/token",
+            "/google/token",
             "/auth",
             "swagger-ui/**",
             "v3/api-docs/**"

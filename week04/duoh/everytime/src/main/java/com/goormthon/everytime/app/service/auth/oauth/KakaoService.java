@@ -15,14 +15,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 @Service("kakao")
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class KakaoOAuthService implements OAuthService {
+public class KakaoService implements OAuthService {
 
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
@@ -37,6 +36,21 @@ public class KakaoOAuthService implements OAuthService {
 
     @Value("${oauth.kakao.redirect-uri}")
     private String kakaoRedirectUri;
+
+    @Override
+    public ApiResTemplate<String> getAccessToken(String code) {
+        String url = "https://kauth.kakao.com/oauth/token";
+        MultiValueMap<String, String> request = createTokenRequest(code, kakaoClientId, kakaoSecretKey, kakaoRedirectUri);
+
+        String result = restClient.post()
+                .uri(url)
+                .body(request)
+                .retrieve()
+                .body(String.class);
+
+        JsonNode jsonNode = parseJson(result);
+        return ApiResTemplate.success(SuccessCode.GET_TOKEN_SUCCESS, jsonNode.get("access_token").asText());
+    }
 
     @Override
     public String getUserInfoUrl() {
@@ -75,24 +89,5 @@ public class KakaoOAuthService implements OAuthService {
                     userRepository.save(newUser);
                     return generateToken(newUser, SuccessCode.SIGNUP_USER_SUCCESS, tokenProvider, tokenRenewService);
                 });
-    }
-
-    public ApiResTemplate<String> getAccessToken(String code) {
-        String url = "https://kauth.kakao.com/oauth/token";
-        MultiValueMap<String, String> request = new LinkedMultiValueMap<>();
-        request.add("grant_type", "authorization_code");
-        request.add("client_id", kakaoClientId);
-        request.add("client_secret", kakaoSecretKey);
-        request.add("redirect_uri", kakaoRedirectUri);
-        request.add("code", code);
-
-        String result = restClient.post()
-                .uri(url)
-                .body(request)
-                .retrieve()
-                .body(String.class);
-
-        JsonNode jsonNode = parseJson(result);
-        return ApiResTemplate.success(SuccessCode.GET_TOKEN_SUCCESS, jsonNode.get("access_token").asText());
     }
 }

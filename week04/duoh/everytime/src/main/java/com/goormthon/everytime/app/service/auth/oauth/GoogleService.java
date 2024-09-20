@@ -15,14 +15,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
-
-import java.util.Map;
 
 @Service("google")
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class GoogleOAuthService implements OAuthService {
+public class GoogleService implements OAuthService {
 
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
@@ -37,6 +36,21 @@ public class GoogleOAuthService implements OAuthService {
 
     @Value("${oauth.google.redirect-uri}")
     private String googleRedirectUri;
+
+    @Override
+    public ApiResTemplate<String> getAccessToken(String code) {
+        String url = "https://oauth2.googleapis.com/token";
+        MultiValueMap<String, String> request = createTokenRequest(code, googleClientId, googleSecretKey, googleRedirectUri);
+
+        String result = restClient.post()
+                .uri(url)
+                .body(request)
+                .retrieve()
+                .body(String.class);
+
+        JsonNode jsonNode = parseJson(result);
+        return ApiResTemplate.success(SuccessCode.GET_TOKEN_SUCCESS, jsonNode.get("access_token").asText());
+    }
 
     @Override
     public String getUserInfoUrl() {
@@ -75,21 +89,5 @@ public class GoogleOAuthService implements OAuthService {
                     userRepository.save(newUser);
                     return generateToken(newUser, SuccessCode.SIGNUP_USER_SUCCESS, tokenProvider, tokenRenewService);
                 });
-    }
-
-    public ApiResTemplate<String> getAccessToken(String code) {
-        String result = restClient.post()
-                .uri("https://oauth2.googleapis.com/token")
-                .body(Map.of(
-                        "grant_type", "authorization_code",
-                        "client_id", googleClientId,
-                        "client_secret", googleSecretKey,
-                        "redirect_uri", googleRedirectUri,
-                        "code", code))
-                .retrieve()
-                .body(String.class);
-
-        JsonNode jsonNode = parseJson(result);
-        return ApiResTemplate.success(SuccessCode.GET_TOKEN_SUCCESS, jsonNode.get("access_token").asText());
     }
 }

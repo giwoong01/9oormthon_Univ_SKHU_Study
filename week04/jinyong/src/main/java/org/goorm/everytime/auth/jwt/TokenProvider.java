@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,7 +34,7 @@ public class TokenProvider {
     private final long ACCESS_TOKEN_EXPIRE_TIME;
     private final long REFRESH_TOKEN_EXPIRE_TIME;
 
-    private final Key key;
+    private final SecretKey key;
 
     public TokenProvider(@Value("${JWT_SECRET}") String secretKey,
                          @Value("${ACCESS_TOKEN_EXPIRE}") long accessTokenExpireTime,
@@ -56,7 +57,7 @@ public class TokenProvider {
                 .subject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .expiration(accessTokenExpiresIn)
-                .signWith(key) //향후 서명 알고리즘은 다른 것을 적용하도록 할 예정.
+                .signWith(key)
                 .compact();
 
         String refreshToken = Jwts.builder()
@@ -116,7 +117,7 @@ public class TokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().build().parseSignedClaims(token);
+            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
@@ -132,7 +133,7 @@ public class TokenProvider {
 
     private Claims parseClaims(String accessToken) {
         try {
-            return Jwts.parser().build().parseSignedClaims(accessToken).getPayload();
+            return Jwts.parser().verifyWith(key).build().parseSignedClaims(accessToken).getPayload();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }

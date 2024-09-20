@@ -13,6 +13,7 @@ import org.goorm.everytime.auth.api.dto.TokenDto;
 import org.goorm.everytime.global.common.dto.BaseResponse;
 import org.goorm.everytime.global.common.exception.SuccessCode;
 import org.goorm.everytime.global.common.exception.model.RefreshTokenInvalidException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class AuthController {
             @Parameter(name = "username", description = "아이디", required = true),
             @Parameter(name = "password", description = "비밀번호", required = true)
     })
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public BaseResponse<TokenDto> login(@RequestBody AuthReqDto authReqDto){
         return BaseResponse.success(SuccessCode.USER_LOGIN_SUCCESS, authService.login(authReqDto));
     }
@@ -38,5 +39,10 @@ public class AuthController {
     @PostMapping("/refresh")
     public BaseResponse<TokenDto> refresh(HttpServletRequest request) throws RefreshTokenInvalidException {
         return BaseResponse.success(SuccessCode.USER_LOGIN_SUCCESS, authService.refresh(request));
+    }
+
+    @GetMapping("/auth")
+    public BaseResponse<String> auth(String token) {
+        return BaseResponse.success(SuccessCode.USER_LOGIN_SUCCESS, token);
     }
 }

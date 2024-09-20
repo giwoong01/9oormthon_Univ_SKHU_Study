@@ -2,7 +2,7 @@ package org.goorm.everytime.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.goorm.everytime.auth.domain.PrincipalDetails;
-import org.goorm.everytime.member.repository.MemberRepository;
+import org.goorm.everytime.member.domain.repository.MemberRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

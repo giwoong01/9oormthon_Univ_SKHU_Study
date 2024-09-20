@@ -9,7 +9,7 @@ import org.goorm.everytime.auth.jwt.TokenProvider;
 import org.goorm.everytime.auth.api.dto.TokenDto;
 import org.goorm.everytime.global.common.exception.model.RefreshTokenInvalidException;
 import org.goorm.everytime.member.domain.Member;
-import org.goorm.everytime.member.repository.MemberRepository;
+import org.goorm.everytime.member.domain.repository.MemberRepository;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final MemberRepository memberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
@@ -46,13 +47,13 @@ public class AuthService {
     public TokenDto refresh(HttpServletRequest request) throws RefreshTokenInvalidException {
         String refreshToken = request.getHeader("Authorization").substring(7);
         if (!tokenProvider.validateToken(refreshToken)) {
-            throw new RuntimeException("Refresh Token이 유효하지 않습니다.");
+            throw new RuntimeException("Token이 유효하지 않습니다.");
         }
         String userId = tokenProvider.getUserIdFromRefreshToken(refreshToken);
         Member member = memberRepository.findById(Long.valueOf(userId)).orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
 
         if(jwtBlackList.isRefreshTokenBlacklisted(refreshToken)){
-            throw new RefreshTokenInvalidException("Refresh Token이 블랙리스트에 등록되어 있습니다.");
+            throw new RefreshTokenInvalidException("로그아웃 처리되었습니다.");
         }
 
         return tokenProvider.regenerateToken(member);

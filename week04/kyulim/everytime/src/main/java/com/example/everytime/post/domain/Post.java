@@ -1,4 +1,4 @@
-package com.example.everytime.Post.domain;
+package com.example.everytime.post.domain;
 
 import com.example.everytime.board.domain.Board;
 import com.example.everytime.member.domain.Member;

@@ -1,4 +1,4 @@
-package com.example.everytime.Post.api.dto;
+package com.example.everytime.post.api.dto;
 
 public record PostReqDto(
         String title,

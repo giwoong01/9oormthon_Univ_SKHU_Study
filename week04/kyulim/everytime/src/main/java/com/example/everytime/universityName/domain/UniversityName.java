@@ -1,4 +1,4 @@
-package com.example.everytime.School.domain;
+package com.example.everytime.universityName.domain;
 
 import com.example.everytime.board.domain.Board;
 import com.example.everytime.member.domain.Member;
@@ -14,12 +14,12 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class School {
+public class UniversityName {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "school_id")
-    private Long schoolId;
+    @Column(name = "university_name_id")
+    private Long universityNameId;
 
     private String name;
 
@@ -27,10 +27,10 @@ public class School {
 
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "school")
+    @OneToMany(mappedBy = "universityName")
     private List<Member> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "school")
+    @OneToMany(mappedBy = "universityName")
     private List<Board> boards = new ArrayList<>();
 
 }

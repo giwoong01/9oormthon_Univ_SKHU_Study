@@ -6,6 +6,7 @@ import com.example.everytime.auth.jwt.exception.InvalidMemberException;
 import com.example.everytime.auth.jwt.exception.NotFoundMemberException;
 import com.example.everytime.member.api.dto.reqeust.MemberJoinReqDto;
 import com.example.everytime.member.api.dto.reqeust.MemberLoginReqDto;
+import com.example.everytime.member.api.dto.response.MemberInfoResDto;
 import com.example.everytime.member.api.dto.response.MemberLoginResDto;
 import com.example.everytime.member.domain.Member;
 import com.example.everytime.member.domain.repository.MemberRepository;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +54,13 @@ public class MemberService {
             throw new InvalidMemberException("패스워드가 일치하지 않습니다.");
         }
         return new MemberLoginResDto(token.accessToken(), token.refreshToken());
+    }
+
+    public MemberInfoResDto getMemberInfo(Principal principal) {
+        Long memberId = Long.parseLong(principal.getName());
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NotFoundMemberException::new);
+
+        return MemberInfoResDto.from(member);
     }
 }

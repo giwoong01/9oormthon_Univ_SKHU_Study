@@ -1,6 +1,7 @@
 package com.example.everytime.post.domain;
 
 import com.example.everytime.board.domain.Board;
+import com.example.everytime.global.entity.BaseEntity;
 import com.example.everytime.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +27,6 @@ public class Post {
     private String anonym;
 
     // files 추가해야 함
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifiedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

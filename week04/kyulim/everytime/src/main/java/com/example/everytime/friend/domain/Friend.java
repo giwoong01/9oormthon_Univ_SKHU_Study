@@ -1,5 +1,6 @@
 package com.example.everytime.friend.domain;
 
+import com.example.everytime.global.entity.BaseEntity;
 import com.example.everytime.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friend {
+public class Friend extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

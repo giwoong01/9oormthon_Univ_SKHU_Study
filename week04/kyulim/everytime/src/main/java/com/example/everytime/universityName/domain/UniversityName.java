@@ -1,6 +1,7 @@
 package com.example.everytime.universityName.domain;
 
 import com.example.everytime.board.domain.Board;
+import com.example.everytime.global.entity.BaseEntity;
 import com.example.everytime.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UniversityName {
+public class UniversityName extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +23,6 @@ public class UniversityName {
     private Long universityNameId;
 
     private String name;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "universityName")
     private List<Member> members = new ArrayList<>();

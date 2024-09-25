@@ -1,5 +1,6 @@
 package com.example.everytime.member.domain;
 
+import com.example.everytime.global.entity.BaseEntity;
 import com.example.everytime.post.domain.Post;
 import com.example.everytime.universityName.domain.UniversityName;
 import com.example.everytime.friend.domain.Friend;
@@ -16,7 +17,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,10 +47,6 @@ public class Member {
 
     private String profileImg;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifiedAt;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -63,7 +60,7 @@ public class Member {
     private List<Post> posts = new ArrayList<>();
 
     @Builder
-    public Member(int year, UniversityName universityName, String name, String nickName, String email, String id, String password, String checkPassword, String department, String profileImg, LocalDateTime createdAt, LocalDateTime modifiedAt, Role role, SocialType socialType, List<Friend> friends, List<Post> posts) {
+    public Member(int year, UniversityName universityName, String name, String nickName, String email, String id, String password, String checkPassword, String department, String profileImg, Role role, SocialType socialType, List<Friend> friends, List<Post> posts) {
         this.year = year;
         this.universityName = universityName;
         this.name = name;
@@ -74,8 +71,6 @@ public class Member {
         this.checkPassword = checkPassword;
         this.department = department;
         this.profileImg = profileImg;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
         this.role = role;
         this.socialType = socialType;
         this.friends = friends;

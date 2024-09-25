@@ -1,6 +1,6 @@
-package com.example.everytime.member.api.dto;
+package com.example.everytime.member.api.dto.reqeust;
 
-import com.example.everytime.School.domain.School;
+import com.example.everytime.universityName.domain.UniversityName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -10,7 +10,7 @@ public record MemberJoinReqDto(
         int year,
 
         @NotBlank(message = "학교명이 공백일 수 없습니다.")
-        School school,
+        UniversityName universityName,
 
         @NotBlank(message = "이름이 공백일 수 없습니다.")
         String name,
@@ -33,9 +33,4 @@ public record MemberJoinReqDto(
         @NotBlank(message = "확인 비밀번호가 공백일 수 없습니다.")
         String checkPassword
 ) {
-        public MemberJoinReqDto {
-                if (!password.equals(checkPassword)) {
-                        throw new IllegalArgumentException("비밀번호를 다시 확인해주세요");
-                }
-        }
 }

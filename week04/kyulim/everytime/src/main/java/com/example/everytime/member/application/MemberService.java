@@ -1,0 +1,55 @@
+package com.example.everytime.member.application;
+
+import com.example.everytime.auth.dto.TokenDto;
+import com.example.everytime.auth.jwt.TokenProvider;
+import com.example.everytime.auth.jwt.exception.InvalidMemberException;
+import com.example.everytime.auth.jwt.exception.NotFoundMemberException;
+import com.example.everytime.member.api.dto.reqeust.MemberJoinReqDto;
+import com.example.everytime.member.api.dto.reqeust.MemberLoginReqDto;
+import com.example.everytime.member.api.dto.response.MemberLoginResDto;
+import com.example.everytime.member.domain.Member;
+import com.example.everytime.member.domain.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class MemberService {
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
+
+    @Transactional
+    public void join(MemberJoinReqDto memberJoinReqDto) {
+        if (memberRepository.existsByEmail(memberJoinReqDto.email())) {
+            throw new InvalidMemberException("이미 존재하는 이메일입니다.");
+        }
+        if (!memberJoinReqDto.password().equals(memberJoinReqDto.checkPassword())) {
+            throw new IllegalArgumentException("비밀번호를 다시 확인해주세요");
+        }
+
+        Member member = Member.builder()
+                .year(memberJoinReqDto.year())
+                .universityName(memberJoinReqDto.universityName())
+                .name(memberJoinReqDto.name())
+                .nickName(memberJoinReqDto.nickName())
+                .email(memberJoinReqDto.email())
+                .id(memberJoinReqDto.id())
+                .password(passwordEncoder.encode(memberJoinReqDto.password()))
+                .checkPassword(memberJoinReqDto.checkPassword())
+                .build();
+        memberRepository.save(member);
+    }
+
+    public MemberLoginResDto login(MemberLoginReqDto memberLoginReqDto) {
+        Member member = memberRepository.findById(memberLoginReqDto.id()).orElseThrow(NotFoundMemberException::new);
+        TokenDto token = tokenProvider.generateToken(member.getId());
+        if (!passwordEncoder.matches(memberLoginReqDto.password(), member.getPassword())) {
+            throw new InvalidMemberException("패스워드가 일치하지 않습니다.");
+        }
+        return new MemberLoginResDto(token.accessToken(), token.refreshToken());
+    }
+}

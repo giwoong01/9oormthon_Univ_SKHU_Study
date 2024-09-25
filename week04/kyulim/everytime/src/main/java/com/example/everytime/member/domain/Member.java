@@ -1,7 +1,7 @@
 package com.example.everytime.member.domain;
 
-import com.example.everytime.Post.domain.Post;
-import com.example.everytime.School.domain.School;
+import com.example.everytime.post.domain.Post;
+import com.example.everytime.universityName.domain.UniversityName;
 import com.example.everytime.friend.domain.Friend;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,8 +26,8 @@ public class Member {
     private int year;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "school_id")
-    private School school;
+    @JoinColumn(name = "universtiy_id")
+    private UniversityName universityName;
 
     private String name;
 
@@ -62,4 +62,23 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 
+    @Builder
+    public Member(int year, UniversityName universityName, String name, String nickName, String email, String id, String password, String checkPassword, String department, String profileImg, LocalDateTime createdAt, LocalDateTime modifiedAt, Role role, SocialType socialType, List<Friend> friends, List<Post> posts) {
+        this.year = year;
+        this.universityName = universityName;
+        this.name = name;
+        this.nickName = nickName;
+        this.email = email;
+        this.id = id;
+        this.password = password;
+        this.checkPassword = checkPassword;
+        this.department = department;
+        this.profileImg = profileImg;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.role = role;
+        this.socialType = socialType;
+        this.friends = friends;
+        this.posts = posts;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.everytime.member.api;
 
+import com.example.everytime.auth.dto.TokenDto;
 import com.example.everytime.global.template.RspTemplate;
 import com.example.everytime.member.api.dto.reqeust.MemberJoinReqDto;
 import com.example.everytime.member.api.dto.reqeust.MemberLoginReqDto;
@@ -28,12 +29,10 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public RspTemplate<Map<String, String>> login(@RequestBody @Valid MemberLoginReqDto memberLoginReqDto) {
+    public RspTemplate<TokenDto> login(@RequestBody @Valid MemberLoginReqDto memberLoginReqDto) {
         MemberLoginResDto memberLoginResDto = memberService.login(memberLoginReqDto);
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("accessToken", memberLoginResDto.accessToken());
-        tokens.put("refreshToken", memberLoginResDto.refreshToken());
+        TokenDto tokens = new TokenDto(memberLoginResDto.accessToken(), memberLoginResDto.refreshToken());
 
         return new RspTemplate<>(HttpStatus.OK, "로그인", tokens);
     }

@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,9 +29,7 @@ public class MemberController {
     @GetMapping("/login")
     public RspTemplate<TokenDto> login(@RequestBody @Valid MemberLoginReqDto memberLoginReqDto) {
         MemberLoginResDto memberLoginResDto = memberService.login(memberLoginReqDto);
-
         TokenDto tokens = new TokenDto(memberLoginResDto.accessToken(), memberLoginResDto.refreshToken());
-
         return new RspTemplate<>(HttpStatus.OK, "로그인", tokens);
     }
 

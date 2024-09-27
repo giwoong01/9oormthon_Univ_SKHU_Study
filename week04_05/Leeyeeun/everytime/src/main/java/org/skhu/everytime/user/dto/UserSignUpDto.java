@@ -1,17 +1,15 @@
 package org.skhu.everytime.user.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@Getter
-public class UserSignUpDto {
-
-    private String email;
-    private String password;
-    private String checkPassword;
-    private String nickname;
-    private String name;
-    private String universityName;
-    private int year;
+public record UserSignUpDto(
+        int year,             // 입학연도
+        String universityName, // 대학교 이름
+        String name,         // 이름
+        String nickName,     // 닉네임
+        String email,        // 이메일
+        String id,           // 아이디
+        String password,      // 비밀번호
+        String checkPassword  // 비밀번호 확인
+) {
 }
+

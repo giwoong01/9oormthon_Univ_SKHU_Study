@@ -27,12 +27,8 @@ public class MemberService {
 
     @Transactional
     public void join(MemberJoinReqDto memberJoinReqDto) {
-        if (memberRepository.existsByEmail(memberJoinReqDto.email())) {
-            throw new InvalidMemberException("이미 존재하는 이메일입니다.");
-        }
-        if (!memberJoinReqDto.password().equals(memberJoinReqDto.checkPassword())) {
-            throw new IllegalArgumentException("비밀번호를 다시 확인해주세요");
-        }
+        validateEmailUniqueness(memberJoinReqDto.email());
+        validatePasswordMatch(memberJoinReqDto.password(), memberJoinReqDto.checkPassword());
 
         Member member = Member.builder()
                 .year(memberJoinReqDto.year())
@@ -62,5 +58,17 @@ public class MemberService {
                 .orElseThrow(NotFoundMemberException::new);
 
         return MemberInfoResDto.from(member);
+    }
+
+    private void validateEmailUniqueness(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            throw new InvalidMemberException("이미 존재하는 이메일입니다.");
+        }
+    }
+
+    private void validatePasswordMatch(String password, String checkPassword) {
+        if (!password.equals(checkPassword)) {
+            throw new IllegalArgumentException("비밀번호를 다시 확인해주세요");
+        }
     }
 }

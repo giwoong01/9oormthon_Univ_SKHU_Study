@@ -60,7 +60,7 @@ public class Member extends BaseEntity {
     private List<Post> posts = new ArrayList<>();
 
     @Builder
-    public Member(int year, UniversityName universityName, String name, String nickName, String email, String id, String password, String checkPassword, String department, String profileImg, Role role, SocialType socialType, List<Friend> friends, List<Post> posts) {
+    private Member(int year, UniversityName universityName, String name, String nickName, String email, String id, String password, String checkPassword, String department, String profileImg, Role role, SocialType socialType, List<Friend> friends, List<Post> posts) {
         this.year = year;
         this.universityName = universityName;
         this.name = name;

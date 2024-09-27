@@ -8,6 +8,7 @@ import org.goorm.everytime.member.domain.Member;
 import org.goorm.everytime.member.domain.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,5 +60,10 @@ public class JoinService {
         if (!password.equals(checkPassword)) {
             throw new IllegalArgumentException("비밀번호와 비밀번호 확인의 값이 동일한지 비밀번호를 다시 확인해주세요.");
         }
+    }
+
+    @Transactional
+    public void deleteMember(String username) {
+        memberRepository.deleteMemberByUsername(username);
     }
 }

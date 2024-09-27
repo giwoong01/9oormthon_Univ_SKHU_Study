@@ -11,7 +11,6 @@ public class KakaoUserInfo implements OAuth2UserInfo {
 
     public KakaoUserInfo(Map<String, Object> attributes) {
         /*
-        System.out.println(attributes);
             {id=아이디값,
             connected_at=2022-02-22T15:50:21Z,
             properties={nickname=이름},

@@ -4,9 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
-import org.goorm.everytime.board.api.dto.MyPostsDto;
-import org.goorm.everytime.board.api.dto.PostUploadDto;
-import org.goorm.everytime.board.api.dto.UploadResultDto;
+import org.goorm.everytime.board.api.dto.member_comments.MyPostsDto;
+import org.goorm.everytime.board.api.dto.posts.PostUploadDto;
 import org.goorm.everytime.board.service.PostProvider;
 import org.goorm.everytime.board.service.PostUploader;
 import org.goorm.everytime.global.common.dto.BaseResponse;
@@ -40,11 +39,12 @@ public class PostController {
             @Parameter(name = "title", description = "게시글 제목", required = true),
             @Parameter(name = "content", description = "게시글 내용", required = true),
             @Parameter(name = "anonym", description = "익명 여부", required = true),
-            @Parameter(name = "files", description = "파일", required = true)
+            @Parameter(name = "files", description = "파일", required = false)
     })
     @PostMapping("/boards/{boardId}/upload")
-    public BaseResponse<UploadResultDto> uploadPost(@ModelAttribute PostUploadDto postUploadDto, Principal principal) {
-        return BaseResponse.success(SuccessCode.POST_UPLOADED, postUploader.uploadPost(postUploadDto, principal));
+    public BaseResponse uploadPost(@ModelAttribute PostUploadDto postUploadDto, Principal principal) {
+        postUploader.uploadPost(postUploadDto, principal);
+        return BaseResponse.success(SuccessCode.POST_UPLOADED);
     }
 
     @Operation(summary = "내가 쓴 글 조회", description = "내가 쓴 글을 조회한다.")

@@ -1,8 +1,7 @@
 package org.goorm.everytime.board.service;
 
 import lombok.RequiredArgsConstructor;
-import org.goorm.everytime.board.api.dto.PostUploadDto;
-import org.goorm.everytime.board.api.dto.UploadResultDto;
+import org.goorm.everytime.board.api.dto.posts.PostUploadDto;
 import org.goorm.everytime.board.domain.Boards;
 import org.goorm.everytime.board.domain.Image;
 import org.goorm.everytime.board.domain.Post;
@@ -28,7 +27,7 @@ public class PostUploader {
     private final PostRepository postRepository;
     private final ImageRepository imageRepository;
 
-    public UploadResultDto uploadPost(PostUploadDto postUploadDto, Principal principal) {
+    public void uploadPost(PostUploadDto postUploadDto, Principal principal) {
         validateImageFiles(postUploadDto.files());
 
         Boards board = boardsRespository.findById(postUploadDto.boardId())
@@ -40,7 +39,6 @@ public class PostUploader {
 
         saveImagesFromDto(postUploadDto, post);
         postRepository.save(post);
-        return new UploadResultDto(true);
     }
 
     private static Post getPost(PostUploadDto postUploadDto, Boards board, Member member) {

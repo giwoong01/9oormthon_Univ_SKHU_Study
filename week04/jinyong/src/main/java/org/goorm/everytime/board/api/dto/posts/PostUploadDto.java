@@ -1,4 +1,4 @@
-package org.goorm.everytime.board.api.dto;
+package org.goorm.everytime.board.api.dto.posts;
 
 import org.springframework.web.multipart.MultipartFile;
 

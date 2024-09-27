@@ -2,11 +2,10 @@ package org.goorm.everytime.board.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.goorm.everytime.member.domain.Member;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.goorm.everytime.member.domain.Member;
 
 @Entity
 @Getter
@@ -20,19 +19,15 @@ public class Post {
     @Column(name = "post_id")
     private Long id;
 
-    @Column(name = "title")
     private String title;
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "votes")
     private int votes;
 
-    @Column(name = "comments")
     private int comments;
 
-    @Column(name = "anonym")
     private boolean anonym;
 
     @ManyToOne
@@ -42,7 +37,7 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY)
     private List<Comment> commentList = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Member member;
 

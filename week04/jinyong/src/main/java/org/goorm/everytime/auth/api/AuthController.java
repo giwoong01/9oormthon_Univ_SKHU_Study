@@ -8,15 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.goorm.everytime.auth.api.dto.AuthReqDto;
-import org.goorm.everytime.auth.service.AuthService;
 import org.goorm.everytime.auth.api.dto.TokenDto;
+import org.goorm.everytime.auth.service.AuthService;
+import org.goorm.everytime.auth.service.OAuth2LoginService;
 import org.goorm.everytime.global.common.dto.BaseResponse;
 import org.goorm.everytime.global.common.exception.SuccessCode;
 import org.goorm.everytime.global.common.exception.model.RefreshTokenInvalidException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final OAuth2LoginService oAuth2LoginService;
 
     @Operation(summary = "로그인", description = "자체 로그인 진행 API")
     @Parameters({
@@ -41,8 +40,13 @@ public class AuthController {
         return BaseResponse.success(SuccessCode.USER_LOGIN_SUCCESS, authService.refresh(request));
     }
 
-    @GetMapping("/auth")
-    public BaseResponse<String> auth(String token) {
-        return BaseResponse.success(SuccessCode.USER_LOGIN_SUCCESS, token);
+    @Operation(summary = "소셜 로그인" , description = "소셜 로그인 진행 API")
+    @Parameters({
+            @Parameter(name = "provider", description = "소셜 로그인 제공자", required = true),
+            @Parameter(name = "code", description = "소셜 로그인 인가코드", required = true)
+    })
+    @PostMapping("/{provider}/token")
+    public BaseResponse<TokenDto> auth(@PathVariable String provider, @RequestParam String code) {
+        return BaseResponse.success(SuccessCode.USER_LOGIN_SUCCESS, oAuth2LoginService.proccessOAuth2Login(provider, code));
     }
 }

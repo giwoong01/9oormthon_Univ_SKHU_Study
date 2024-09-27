@@ -10,9 +10,12 @@ import org.goorm.everytime.global.common.dto.BaseResponse;
 import org.goorm.everytime.global.common.exception.SuccessCode;
 import org.goorm.everytime.member.api.dto.JoinDto;
 import org.goorm.everytime.member.service.JoinService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,5 +38,12 @@ public class JoinController {
     public BaseResponse join(@Valid @RequestBody JoinDto joinDto) {
         joinService.join(joinDto);
         return BaseResponse.success(SuccessCode.USER_JOIN_SUCCESS);
+    }
+
+    @Operation(summary = "회원 탈퇴")
+    @DeleteMapping("/user/deleteUser")
+    public BaseResponse deleteUser(Principal principal) {
+        joinService.deleteMember(principal.getName());
+        return BaseResponse.success(SuccessCode.USER_DELETE_SUCCESS);
     }
 }

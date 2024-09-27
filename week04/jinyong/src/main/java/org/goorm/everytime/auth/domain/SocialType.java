@@ -17,4 +17,9 @@ public enum SocialType {
             return SELF;
         }
     }
+
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
 }

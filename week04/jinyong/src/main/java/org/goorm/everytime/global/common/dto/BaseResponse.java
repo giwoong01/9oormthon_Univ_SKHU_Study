@@ -12,7 +12,7 @@ import org.goorm.everytime.global.common.exception.SuccessCode;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse<T> {
-    private final int code;
+    private final int statusCode;
     private final String message;
     private T data;
 

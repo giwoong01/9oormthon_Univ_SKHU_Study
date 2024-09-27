@@ -34,16 +34,13 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private SocialType socialType; //로그인 타입
 
-    @Column(name = "email")
     private String email; //이메일
 
-    @Column(name = "year")
     private int year; //나이
 
     @Column(name = "university_name")
     private String universityName; //대학교 이름
 
-    @Column(name = "name")
     private String name; //사용자 이름
 
     /*

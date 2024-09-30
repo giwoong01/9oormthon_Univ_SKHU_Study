@@ -39,7 +39,7 @@ public class AuthController {
     )
     public ResponseEntity<ApiResTemplate<Void>> signUp(@Valid @RequestBody SignUpReqDto reqDto) {
         ApiResTemplate<Void> data = signUpService.signUp(reqDto);
-        return ResponseEntity.status(data.getStatus()).body(data);
+        return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 
     @PostMapping("/user/login")
@@ -55,7 +55,7 @@ public class AuthController {
     )
     public ResponseEntity<ApiResTemplate<AuthResDto>> login(@Valid @RequestBody LoginReqDto reqDto) {
         ApiResTemplate<AuthResDto> data = loginService.login(reqDto);
-        return ResponseEntity.status(data.getStatus()).body(data);
+        return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 
     @PostMapping("/{provider}/token")
@@ -79,6 +79,6 @@ public class AuthController {
         String accessToken = accessTokenRes.getData();
 
         ApiResTemplate<AuthResDto> data = oauthService.signUpOrLogin(accessToken);
-        return ResponseEntity.status(data.getStatus()).body(data);
+        return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 }

@@ -32,6 +32,6 @@ public class UserController {
             })
     public ResponseEntity<ApiResTemplate<UserInfoResDto>> getUserInfo(Principal principal) {
         ApiResTemplate<UserInfoResDto> data = userInfoService.getUserInfo(principal);
-        return ResponseEntity.status(data.getStatus()).body(data);
+        return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 }

@@ -16,7 +16,8 @@ public enum SuccessCode {
     GET_BOARD_LIST_SUCCESS(HttpStatus.OK, "전체 게시판 조회에 성공했습니다."),
 
     // 201 Created
-    SIGNUP_USER_SUCCESS(HttpStatus.CREATED, "회원가입에 성공했습니다.");
+    SIGNUP_USER_SUCCESS(HttpStatus.CREATED, "회원가입에 성공했습니다."),
+    POST_UPLOAD_SUCCESS(HttpStatus.CREATED, "게시글 작성에 성공했습니다.");
 
     // 204 No Content
 

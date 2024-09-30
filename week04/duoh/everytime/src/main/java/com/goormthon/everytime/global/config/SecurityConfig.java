@@ -28,7 +28,7 @@ public class SecurityConfig {
             "/kakao/token",
             "/google/token",
             "/auth",
-            "/boards",
+            "/boards/**",
             "swagger-ui/**",
             "v3/api-docs/**"
     };

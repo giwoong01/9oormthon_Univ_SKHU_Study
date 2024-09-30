@@ -1,7 +1,6 @@
 package com.goormthon.everytime.app.dto.board.resDto;
 
 import com.goormthon.everytime.app.domain.board.Board;
-import com.goormthon.everytime.app.dto.post.resDto.PostResDto;
 import lombok.Builder;
 
 import java.util.List;

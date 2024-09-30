@@ -1,4 +1,4 @@
-package com.goormthon.everytime.app.dto.post.resDto;
+package com.goormthon.everytime.app.dto.board.resDto;
 
 import com.goormthon.everytime.app.domain.board.post.Post;
 import lombok.Builder;

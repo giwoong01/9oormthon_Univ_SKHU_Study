@@ -10,10 +10,7 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum University {
-    SKHU("성공회대"),
-    SNU("서울대"),
-    KU("고려대"),
-    SSU("숭실대");
+    SKHU("성공회대");
 
     private final String displayName;
 

@@ -33,7 +33,8 @@ public enum ErrorCode {
     ID_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 아이디입니다."),
 
     // 500 Internal Server Exception
-    FAILED_GET_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "토큰을 가져오는 데 실패했습니다.");
+    FAILED_GET_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "토큰을 가져오는 데 실패했습니다."),
+    FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드 중 오류가 발생했습니다.");
 
     // 503 Service Unavailable
 

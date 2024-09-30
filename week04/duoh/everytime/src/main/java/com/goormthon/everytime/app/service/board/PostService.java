@@ -10,12 +10,14 @@ import com.goormthon.everytime.app.repository.*;
 import com.goormthon.everytime.global.exception.CustomException;
 import com.goormthon.everytime.global.exception.code.ErrorCode;
 import com.goormthon.everytime.global.exception.code.SuccessCode;
+import com.goormthon.everytime.global.service.S3Service;
 import com.goormthon.everytime.global.template.ApiResTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +34,7 @@ public class PostService {
     private final ImageRepository imageRepository;
     private final PostImageRepository postImageRepository;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     @Transactional
     public ApiResTemplate<Void> uploadPost(
@@ -59,7 +62,12 @@ public class PostService {
                 throw new CustomException(ErrorCode.INVALID_FILE_TYPE, ErrorCode.INVALID_FILE_TYPE.getMessage());
             }
 
-            String imageUrl = file.getOriginalFilename();
+            String imageUrl;
+            try {
+                imageUrl = s3Service.upload(file, "post-images");
+            } catch (IOException e) {
+                throw new CustomException(ErrorCode.FILE_UPLOAD_ERROR, ErrorCode.FILE_UPLOAD_ERROR.getMessage());
+            }
 
             Image image = imageRepository.save(Image.builder()
                     .imageUrl(imageUrl)

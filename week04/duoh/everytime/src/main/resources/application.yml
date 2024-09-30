@@ -29,6 +29,18 @@ spring:
       port: ${REDIS_PORT}
       host: ${REDIS_SERVER}
 
+cloud:
+  aws:
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: ${S3_BUCKET}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 jwt:
   secret: ${JWT_SECRET}
   access-token-validity-in-milliseconds: ${ACCESS_TOKEN_VALIDITY_IN_MILLISECONDS}

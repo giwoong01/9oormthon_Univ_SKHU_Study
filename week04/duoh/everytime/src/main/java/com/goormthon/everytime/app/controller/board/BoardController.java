@@ -2,7 +2,7 @@ package com.goormthon.everytime.app.controller.board;
 
 import com.goormthon.everytime.app.dto.board.resDto.BoardListResDto;
 import com.goormthon.everytime.app.dto.board.resDto.BoardDetailResDto;
-import com.goormthon.everytime.app.service.board.BoardDisplayService;
+import com.goormthon.everytime.app.service.board.BoardService;
 import com.goormthon.everytime.global.template.ApiResTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,7 +20,7 @@ import java.util.List;
 @Tag(name = "게시판", description = "게시판을 담당하는 api 그룹")
 public class BoardController {
 
-    private final BoardDisplayService boardDisplayService;
+    private final BoardService boardService;
 
     @GetMapping
     @Operation(
@@ -33,7 +33,7 @@ public class BoardController {
                     @ApiResponse(responseCode = "500", description = "서버 문제 or 관리자 문의")
             })
     public ResponseEntity<ApiResTemplate<List<BoardListResDto>>> getAllBoards(Principal principal) {
-        ApiResTemplate<List<BoardListResDto>> data = boardDisplayService.getBoardList(principal);
+        ApiResTemplate<List<BoardListResDto>> data = boardService.getBoardList(principal);
         return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 
@@ -52,7 +52,7 @@ public class BoardController {
             @PathVariable int boardId,
             @RequestParam int page,
             Principal principal) {
-        ApiResTemplate<BoardDetailResDto> data = boardDisplayService.getBoardDetail(boardId, page, principal);
+        ApiResTemplate<BoardDetailResDto> data = boardService.getBoardDetail(boardId, page, principal);
         return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 }

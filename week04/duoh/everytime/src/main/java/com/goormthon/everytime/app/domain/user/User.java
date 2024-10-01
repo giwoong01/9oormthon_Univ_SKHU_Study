@@ -18,30 +18,30 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "year", nullable = false, length = 2)
+    @Column(nullable = false, length = 2)
     private String year;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "university", nullable = false)
+    @Column(nullable = false)
     private University university;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(name = "nick_name", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String nickName;
 
-    @Column(name = "email", nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 100, unique = true)
     private String email;
 
-    @Column(name = "id", nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 100, unique = true)
     private String id;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role_type", nullable = false)
+    @Column(nullable = false)
     private RoleType roleType;
 
     @ManyToOne(fetch = FetchType.LAZY)

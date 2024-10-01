@@ -18,7 +18,7 @@ public class Friend {
     private Long friendshipId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)

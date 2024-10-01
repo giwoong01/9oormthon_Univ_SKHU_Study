@@ -27,7 +27,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class BoardDisplayService {
+public class BoardService {
 
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;

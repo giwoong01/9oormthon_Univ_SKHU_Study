@@ -21,11 +21,11 @@ public class Board {
     private Long boardId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "board_name", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private BoardName boardName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "university", nullable = false)
+    @Column(nullable = false)
     private University university;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)

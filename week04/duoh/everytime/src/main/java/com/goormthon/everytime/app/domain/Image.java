@@ -16,7 +16,7 @@ public class Image {
     @Column(name = "image_id")
     private Long imageId;
 
-    @Column(name = "image_url", nullable = false, length = 2083)
+    @Column(nullable = false, length = 2083)
     private String imageUrl;
 
     @Builder

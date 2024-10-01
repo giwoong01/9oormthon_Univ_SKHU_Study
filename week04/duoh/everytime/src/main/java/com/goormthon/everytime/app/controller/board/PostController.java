@@ -1,29 +1,27 @@
 package com.goormthon.everytime.app.controller.board;
 
+import com.goormthon.everytime.app.dto.board.reqDto.PostReqDto;
 import com.goormthon.everytime.app.dto.board.resDto.PostDetailResDto;
 import com.goormthon.everytime.app.service.board.PostService;
 import com.goormthon.everytime.global.template.ApiResTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/posts")
-@Tag(name = "게시글", description = "게시글 조회를 담당하는 api 그룹")
+@Tag(name = "게시글", description = "게시글을 담당하는 api 그룹")
 public class PostController {
 
     private final PostService postService;
 
-    @GetMapping
+    @GetMapping("/posts")
     @Operation(
             summary = "게시글 조회",
             description = "게시글을 조회합니다.",
@@ -35,10 +33,28 @@ public class PostController {
             }
     )
     public ResponseEntity<ApiResTemplate<PostDetailResDto>> getPost(
-            @RequestParam("boardId") int boardId,
-            @RequestParam("postId") Long postId,
+            @RequestParam int boardId,
+            @RequestParam Long postId,
             Principal principal) {
         ApiResTemplate<PostDetailResDto> data = postService.getPost(boardId, postId, principal);
+        return ResponseEntity.status(data.getStatusCode()).body(data);
+    }
+
+    @PostMapping("/boards/{boardId}/upload")
+    @Operation(
+            summary = "게시글 등록",
+            description = "사용자가 게시글을 등록합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "게시글 등록 성공"),
+                    @ApiResponse(responseCode = "403", description = "권한 문제"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+                    @ApiResponse(responseCode = "500", description = "서버 문제 or 관리자 문의")
+            })
+    public ResponseEntity<ApiResTemplate<Void>> uploadPost(
+            @PathVariable int boardId,
+            @ModelAttribute @Valid PostReqDto reqDto,
+            Principal principal) {
+        ApiResTemplate<Void> data = postService.uploadPost(reqDto, principal, boardId);
         return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 }

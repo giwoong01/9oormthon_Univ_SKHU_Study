@@ -4,7 +4,7 @@ import com.goormthon.everytime.app.domain.board.Board;
 import com.goormthon.everytime.app.domain.board.BoardName;
 import com.goormthon.everytime.app.domain.board.post.Post;
 import com.goormthon.everytime.app.domain.board.post.PostImage;
-import com.goormthon.everytime.app.domain.image.Image;
+import com.goormthon.everytime.app.domain.Image;
 import com.goormthon.everytime.app.domain.user.User;
 import com.goormthon.everytime.app.dto.board.reqDto.PostReqDto;
 import com.goormthon.everytime.app.dto.board.resDto.CommentResDto;
@@ -96,7 +96,6 @@ public class PostService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
 
         BoardName boardName = BoardName.fromId(boardId);
-
         Board board = boardRepository.findByBoardNameAndUniversity(boardName, user.getUniversity())
                 .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND, ErrorCode.BOARD_NOT_FOUND.getMessage()));
 
@@ -109,8 +108,8 @@ public class PostService {
                 .map(CommentResDto::from)
                 .toList();
 
-        PostDetailResDto postDetailResDto = PostDetailResDto.of(post, commentsCount, comments);
+        PostDetailResDto resDto = PostDetailResDto.of(post, commentsCount, comments);
 
-        return ApiResTemplate.success(SuccessCode.GET_POST_SUCCESS, postDetailResDto);
+        return ApiResTemplate.success(SuccessCode.GET_POST_SUCCESS, resDto);
     }
 }

@@ -1,7 +1,7 @@
 package com.goormthon.everytime.app.service.auth.oauth;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.goormthon.everytime.app.domain.image.Image;
+import com.goormthon.everytime.app.domain.Image;
 import com.goormthon.everytime.app.domain.user.RoleType;
 import com.goormthon.everytime.app.domain.user.User;
 import com.goormthon.everytime.app.dto.auth.UserInfoDto;

@@ -1,4 +1,4 @@
-package com.goormthon.everytime.app.domain.user.friend;
+package com.goormthon.everytime.app.domain.friend;
 
 import com.goormthon.everytime.app.domain.user.User;
 import jakarta.persistence.*;

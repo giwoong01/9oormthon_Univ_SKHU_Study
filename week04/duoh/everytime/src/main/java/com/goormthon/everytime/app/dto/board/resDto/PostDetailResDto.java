@@ -11,10 +11,8 @@ import java.util.List;
 public record PostDetailResDto(
         int boardId,
         String boardName,
-        Long postId,
         Long authorId,
-        String postTitle,
-        String postContent,
+        PostResDto postResDto,
         String author,
         String timestamp,
         int likes,
@@ -26,10 +24,8 @@ public record PostDetailResDto(
         return PostDetailResDto.builder()
                 .boardId(post.getBoard().getBoardName().getId())
                 .boardName(post.getBoard().getBoardName().getDisplayName())
-                .postId(post.getPostId())
                 .authorId(post.getUser().getUserId())
-                .postTitle(post.getTitle())
-                .postContent(post.getContent())
+                .postResDto(PostResDto.from(post))
                 .author(post.isAnonym() ? "익명" : post.getUser().getNickName())
                 .timestamp(formatTimestamp(post.getCreatedAt()))
                 .likes(post.getVotes())

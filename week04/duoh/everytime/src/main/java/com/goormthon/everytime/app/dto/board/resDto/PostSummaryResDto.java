@@ -7,20 +7,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Builder
-public record DetailedPostResDto(
-        Long postId,
-        String postTitle,
-        String postContent,
+public record PostSummaryResDto(
+        PostResDto postResDto,
         String author,
         int likes,
         int comments,
         String timestamp
 ) {
-    public static DetailedPostResDto of(Post post, int commentCount) {
-        return DetailedPostResDto.builder()
-                .postId(post.getPostId())
-                .postTitle(post.getTitle())
-                .postContent(post.getContent())
+    public static PostSummaryResDto of(Post post, int commentCount) {
+        return PostSummaryResDto.builder()
+                .postResDto(PostResDto.from(post))
                 .author(post.isAnonym() ? "익명" : post.getUser().getNickName())
                 .likes(post.getVotes())
                 .comments(commentCount)

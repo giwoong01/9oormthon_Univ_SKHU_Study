@@ -1,6 +1,6 @@
 package com.goormthon.everytime.app.domain.board.post;
 
-import com.goormthon.everytime.app.domain.image.Image;
+import com.goormthon.everytime.app.domain.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Builder
-public record BoardResDto(
+public record BoardListResDto(
         int boardId,
         String boardName,
         List<PostResDto> posts
 ) {
-    public static BoardResDto from(Board board) {
-        return BoardResDto.builder()
+    public static BoardListResDto from(Board board) {
+        return BoardListResDto.builder()
                 .boardId(board.getBoardName().getId())
                 .boardName(board.getBoardName().getDisplayName())
                 .posts(board.getPosts().stream()

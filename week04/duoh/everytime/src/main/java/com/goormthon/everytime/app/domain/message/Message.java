@@ -1,4 +1,4 @@
-package com.goormthon.everytime.app.domain.user.message;
+package com.goormthon.everytime.app.domain.message;
 
 import com.goormthon.everytime.app.domain.BaseEntity;
 import com.goormthon.everytime.app.domain.user.User;

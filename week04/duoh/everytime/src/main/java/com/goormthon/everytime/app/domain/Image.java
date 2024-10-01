@@ -1,4 +1,4 @@
-package com.goormthon.everytime.app.domain.image;
+package com.goormthon.everytime.app.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

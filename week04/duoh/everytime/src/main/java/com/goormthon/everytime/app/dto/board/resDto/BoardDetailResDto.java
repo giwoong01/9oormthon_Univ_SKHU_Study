@@ -8,14 +8,14 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Builder
-public record SingleBoardResDto(
+public record BoardDetailResDto(
         int boardId,
         String boardName,
         PageInfoResDto pageInfo,
-        List<DetailedPostResDto> posts
+        List<PostSummaryResDto> posts
 ) {
-    public static SingleBoardResDto of(Board board, Page<DetailedPostResDto> postPage) {
-        return SingleBoardResDto.builder()
+    public static BoardDetailResDto of(Board board, Page<PostSummaryResDto> postPage) {
+        return BoardDetailResDto.builder()
                 .boardId(board.getBoardName().getId())
                 .boardName(board.getBoardName().getDisplayName())
                 .pageInfo(PageInfoResDto.from(postPage))

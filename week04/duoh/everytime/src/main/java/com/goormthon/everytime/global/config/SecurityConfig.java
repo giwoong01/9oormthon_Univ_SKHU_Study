@@ -29,6 +29,7 @@ public class SecurityConfig {
             "/google/token",
             "/auth",
             "/boards/**",
+            "/posts/**",
             "swagger-ui/**",
             "v3/api-docs/**"
     };

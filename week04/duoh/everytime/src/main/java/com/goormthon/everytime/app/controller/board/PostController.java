@@ -1,0 +1,44 @@
+package com.goormthon.everytime.app.controller.board;
+
+import com.goormthon.everytime.app.dto.board.resDto.PostDetailResDto;
+import com.goormthon.everytime.app.service.board.PostService;
+import com.goormthon.everytime.global.template.ApiResTemplate;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/posts")
+@Tag(name = "게시글", description = "게시글 조회를 담당하는 api 그룹")
+public class PostController {
+
+    private final PostService postService;
+
+    @GetMapping
+    @Operation(
+            summary = "게시글 조회",
+            description = "게시글을 조회합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "게시글 조회 성공"),
+                    @ApiResponse(responseCode = "403", description = "권한 문제"),
+                    @ApiResponse(responseCode = "404", description = "게시글 정보를 찾을 수 없음"),
+                    @ApiResponse(responseCode = "500", description = "서버 문제 or 관리자 문의")
+            }
+    )
+    public ResponseEntity<ApiResTemplate<PostDetailResDto>> getPost(
+            @RequestParam("boardId") int boardId,
+            @RequestParam("postId") Long postId,
+            Principal principal) {
+        ApiResTemplate<PostDetailResDto> data = postService.getPost(boardId, postId, principal);
+        return ResponseEntity.status(data.getStatusCode()).body(data);
+    }
+}

@@ -19,15 +19,6 @@ public class Comment extends BaseEntity {
     @Column(name = "comment_id")
     private Long commentId;
 
-    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
-    private String content;
-
-    @Column(name = "anonym", nullable = false)
-    private boolean anonym;
-
-    @Column(name = "votes")
-    private Integer votes;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
@@ -36,17 +27,21 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int votes;
+
+    @Column(nullable = false)
+    private boolean anonym;
 
     @Builder
-    private Comment(String content, boolean anonym, Integer votes, Post post, User user, Comment parentComment) {
-        this.content = content;
-        this.anonym = anonym;
-        this.votes = votes;
+    private Comment(Post post, User user, String content, int votes, boolean anonym) {
         this.post = post;
         this.user = user;
-        this.parentComment = parentComment;
+        this.content = content;
+        this.votes = votes;
+        this.anonym = anonym;
     }
 }

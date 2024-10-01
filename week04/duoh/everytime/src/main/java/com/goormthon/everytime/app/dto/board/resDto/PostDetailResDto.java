@@ -5,26 +5,37 @@ import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Builder
-public record DetailedPostResDto(
+public record PostDetailResDto(
+        int boardId,
+        String boardName,
         Long postId,
+        Long authorId,
         String postTitle,
         String postContent,
         String author,
+        String timestamp,
         int likes,
-        int comments,
-        String timestamp
+        int commentsCount,
+        int scrapsCount,
+        List<CommentResDto> comments
 ) {
-    public static DetailedPostResDto of(Post post, int commentCount) {
-        return DetailedPostResDto.builder()
+    public static PostDetailResDto of(Post post, int commentsCount, List<CommentResDto> comments) {
+        return PostDetailResDto.builder()
+                .boardId(post.getBoard().getBoardName().getId())
+                .boardName(post.getBoard().getBoardName().getDisplayName())
                 .postId(post.getPostId())
+                .authorId(post.getUser().getUserId())
                 .postTitle(post.getTitle())
                 .postContent(post.getContent())
                 .author(post.isAnonym() ? "익명" : post.getUser().getNickName())
-                .likes(post.getVotes())
-                .comments(commentCount)
                 .timestamp(formatTimestamp(post.getCreatedAt()))
+                .likes(post.getVotes())
+                .commentsCount(commentsCount)
+                .scrapsCount(0)
+                .comments(comments)
                 .build();
     }
 

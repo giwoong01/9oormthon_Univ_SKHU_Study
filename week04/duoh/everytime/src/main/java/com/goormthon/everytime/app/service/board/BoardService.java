@@ -8,6 +8,7 @@ import com.goormthon.everytime.app.dto.board.resDto.BoardResDto;
 import com.goormthon.everytime.app.dto.board.resDto.DetailedPostResDto;
 import com.goormthon.everytime.app.dto.board.resDto.SingleBoardResDto;
 import com.goormthon.everytime.app.repository.BoardRepository;
+import com.goormthon.everytime.app.repository.CommentRepository;
 import com.goormthon.everytime.app.repository.PostRepository;
 import com.goormthon.everytime.app.repository.UserRepository;
 import com.goormthon.everytime.global.exception.CustomException;
@@ -31,6 +32,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public ApiResTemplate<List<BoardResDto>> getAllBoards(Principal principal) {
         Long userId = Long.parseLong(principal.getName());
@@ -56,7 +58,11 @@ public class BoardService {
                 .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND, ErrorCode.BOARD_NOT_FOUND.getMessage()));
 
         Page<Post> posts = postRepository.findByBoard(board, PageRequest.of(page - 1, 10));
-        Page<DetailedPostResDto> postResDtos = posts.map(DetailedPostResDto::from);
+
+        Page<DetailedPostResDto> postResDtos = posts.map(post -> {
+            int commentCount = commentRepository.countByPost(post);
+            return DetailedPostResDto.of(post, commentCount);
+        });
 
         SingleBoardResDto resDto = SingleBoardResDto.of(board, postResDtos);
 

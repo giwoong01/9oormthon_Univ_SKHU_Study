@@ -2,10 +2,12 @@ package com.goormthon.everytime.app.service.board;
 
 import com.goormthon.everytime.app.domain.board.Board;
 import com.goormthon.everytime.app.domain.board.BoardName;
+import com.goormthon.everytime.app.domain.board.comment.Comment;
 import com.goormthon.everytime.app.domain.board.post.Post;
 import com.goormthon.everytime.app.domain.board.post.PostImage;
 import com.goormthon.everytime.app.domain.Image;
 import com.goormthon.everytime.app.domain.user.User;
+import com.goormthon.everytime.app.dto.board.reqDto.CommentReqDto;
 import com.goormthon.everytime.app.dto.board.reqDto.PostReqDto;
 import com.goormthon.everytime.app.dto.board.resDto.CommentResDto;
 import com.goormthon.everytime.app.dto.board.resDto.PostDetailResDto;
@@ -41,7 +43,7 @@ public class PostService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public ApiResTemplate<Void> uploadPost(
+    public ApiResTemplate<Void> createPost(
             PostReqDto reqDto, Principal principal, int boardId) {
 
         Long userId = Long.parseLong(principal.getName());
@@ -58,7 +60,7 @@ public class PostService {
             saveImages(reqDto.files(), post);
         }
 
-        return ApiResTemplate.success(SuccessCode.POST_UPLOAD_SUCCESS, null);
+        return ApiResTemplate.success(SuccessCode.POST_CREATED_SUCCESS, null);
     }
 
     private void saveImages(List<MultipartFile> files, Post post) {
@@ -111,5 +113,26 @@ public class PostService {
         PostDetailResDto resDto = PostDetailResDto.of(post, commentsCount, comments);
 
         return ApiResTemplate.success(SuccessCode.GET_POST_SUCCESS, resDto);
+    }
+
+    @Transactional
+    public ApiResTemplate<Void> createComment(
+            CommentReqDto reqDto, int boardId, Long postId, Principal principal) {
+
+        Long userId = Long.parseLong(principal.getName());
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
+
+        BoardName boardName = BoardName.fromId(boardId);
+        Board board = boardRepository.findByBoardNameAndUniversity(boardName, user.getUniversity())
+                .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND, ErrorCode.BOARD_NOT_FOUND.getMessage()));
+
+        Post post = postRepository.findByPostIdAndBoard(postId, board)
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        Comment comment = reqDto.toEntity(post, user);
+        commentRepository.save(comment);
+
+        return ApiResTemplate.success(SuccessCode.COMMENT_CREATED_SUCCESS, null);
     }
 }

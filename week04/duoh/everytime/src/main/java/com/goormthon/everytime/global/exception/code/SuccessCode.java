@@ -20,7 +20,8 @@ public enum SuccessCode {
 
     // 201 Created
     SIGNUP_USER_SUCCESS(HttpStatus.CREATED, "회원가입에 성공했습니다."),
-    POST_UPLOAD_SUCCESS(HttpStatus.CREATED, "게시글 작성에 성공했습니다.");
+    POST_CREATED_SUCCESS(HttpStatus.CREATED, "게시글 등록에 성공했습니다."),
+    COMMENT_CREATED_SUCCESS(HttpStatus.CREATED, "댓글 등록에 성공했습니다.");
 
     // 204 No Content
 

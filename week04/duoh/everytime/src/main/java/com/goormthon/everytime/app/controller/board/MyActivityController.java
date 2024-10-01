@@ -1,7 +1,7 @@
 package com.goormthon.everytime.app.controller.board;
 
 import com.goormthon.everytime.app.dto.board.resDto.MyBoardResDto;
-import com.goormthon.everytime.app.service.board.MyActivityService;
+import com.goormthon.everytime.app.service.board.MyPostService;
 import com.goormthon.everytime.global.template.ApiResTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,7 +19,7 @@ import java.util.List;
 @Tag(name = "사용자 활동", description = "사용자 활동(게시글, 댓글, 스크랩)을 조회하는 api 그룹")
 public class MyActivityController {
 
-    private final MyActivityService myActivityService;
+    private final MyPostService myPostService;
 
     @GetMapping("/myPost")
     @Operation(
@@ -33,7 +33,7 @@ public class MyActivityController {
             }
     )
     public ResponseEntity<ApiResTemplate<List<MyBoardResDto>>> getMyPosts(Principal principal) {
-        ApiResTemplate<List<MyBoardResDto>> data = myActivityService.getMyPosts(principal);
+        ApiResTemplate<List<MyBoardResDto>> data = myPostService.getMyPosts(principal);
         return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 }

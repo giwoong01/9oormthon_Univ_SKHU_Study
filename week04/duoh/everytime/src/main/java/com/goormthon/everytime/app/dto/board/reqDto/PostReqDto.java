@@ -25,9 +25,9 @@ public record PostReqDto(
 
     public Post toEntity(Board board, User user) {
         return Post.builder()
-                .title(title)
-                .content(content)
-                .anonym(Boolean.parseBoolean(anonym))
+                .title(this.title)
+                .content(this.content)
+                .anonym(Boolean.parseBoolean(this.anonym))
                 .board(board)
                 .user(user)
                 .build();

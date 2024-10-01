@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MyActivityService {
+public class MyPostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;

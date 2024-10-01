@@ -29,6 +29,7 @@ public class SecurityConfig {
             "/boards/**",
             "/posts/**",
             "/myPost",
+            "/myComment",
             "swagger-ui/**",
             "v3/api-docs/**"
     };

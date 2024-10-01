@@ -1,6 +1,7 @@
 package com.goormthon.everytime.app.service.board;
 
 import com.goormthon.everytime.app.domain.board.Board;
+import com.goormthon.everytime.app.domain.board.BoardName;
 import com.goormthon.everytime.app.domain.board.post.Post;
 import com.goormthon.everytime.app.domain.board.post.PostImage;
 import com.goormthon.everytime.app.domain.image.Image;
@@ -38,13 +39,14 @@ public class PostService {
 
     @Transactional
     public ApiResTemplate<Void> uploadPost(
-            PostReqDto reqDto, Principal principal, Long boardId) {
+            PostReqDto reqDto, Principal principal, int boardId) {
 
         Long userId = Long.parseLong(principal.getName());
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
 
-        Board board = boardRepository.findById(boardId)
+        BoardName boardName = BoardName.fromId(boardId);
+        Board board = boardRepository.findByBoardNameAndUniversity(boardName, user.getUniversity())
                 .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND, ErrorCode.BOARD_NOT_FOUND.getMessage()));
 
         Post post = postRepository.save(reqDto.toEntity(board, user));

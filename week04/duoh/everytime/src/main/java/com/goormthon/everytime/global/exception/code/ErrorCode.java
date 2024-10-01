@@ -14,6 +14,7 @@ public enum ErrorCode {
     JSON_PARSE_ERROR(HttpStatus.BAD_REQUEST, "JSON 파싱 중 오류가 발생했습니다."),
     PASSWORD_MISSMATCH(HttpStatus.BAD_REQUEST, "비밀번호를 다시 확인해주세요."),
     INVALID_UNIVERSITY_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 대학명입니다."),
+    INVALID_BOARD(HttpStatus.BAD_REQUEST, "유효하지 않은 게시판입니다."),
     INVALID_FILE_TYPE(HttpStatus.BAD_REQUEST, "이미지만 업로드 가능합니다."),
 
     // 401 Unauthorized

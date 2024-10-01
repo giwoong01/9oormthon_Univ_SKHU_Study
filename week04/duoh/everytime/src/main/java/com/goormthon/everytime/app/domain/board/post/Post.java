@@ -28,11 +28,11 @@ public class Post extends BaseEntity {
     @Column(name = "anonym", nullable = false)
     private boolean anonym;
 
-    @Column(name = "votes")
-    private Integer votes;
+    @Column(name = "votes", nullable = false, columnDefinition = "int default 0")
+    private int votes;
 
-    @Column(name = "comments")
-    private Integer comments;
+    @Column(name = "comments", nullable = false, columnDefinition = "int default 0")
+    private int comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false)
@@ -43,7 +43,7 @@ public class Post extends BaseEntity {
     private User user;
 
     @Builder
-    private Post(String title, String content, boolean anonym, Integer votes, Integer comments, Board board, User user) {
+    private Post(String title, String content, boolean anonym, int votes, int comments, Board board, User user) {
         this.title = title;
         this.content = content;
         this.anonym = anonym;

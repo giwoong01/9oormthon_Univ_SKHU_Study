@@ -1,6 +1,6 @@
 package com.goormthon.everytime.app.controller.board;
 
-import com.goormthon.everytime.app.dto.board.resDto.MyPostResDto;
+import com.goormthon.everytime.app.dto.board.resDto.MyBoardResDto;
 import com.goormthon.everytime.app.service.board.MyActivityService;
 import com.goormthon.everytime.global.template.ApiResTemplate;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,8 +32,8 @@ public class MyActivityController {
                     @ApiResponse(responseCode = "500", description = "서버 문제 or 관리자 문의")
             }
     )
-    public ResponseEntity<ApiResTemplate<List<MyPostResDto>>> getMyPosts(Principal principal) {
-        ApiResTemplate<List<MyPostResDto>> data = myActivityService.getMyPosts(principal);
+    public ResponseEntity<ApiResTemplate<List<MyBoardResDto>>> getMyPosts(Principal principal) {
+        ApiResTemplate<List<MyBoardResDto>> data = myActivityService.getMyPosts(principal);
         return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 }

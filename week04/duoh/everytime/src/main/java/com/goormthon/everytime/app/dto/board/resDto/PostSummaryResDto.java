@@ -8,7 +8,9 @@ import java.time.format.DateTimeFormatter;
 
 @Builder
 public record PostSummaryResDto(
-        PostResDto postResDto,
+        Long postId,
+        String postTitle,
+        String postContent,
         String author,
         int likes,
         int comments,
@@ -16,7 +18,9 @@ public record PostSummaryResDto(
 ) {
     public static PostSummaryResDto of(Post post, int commentCount) {
         return PostSummaryResDto.builder()
-                .postResDto(PostResDto.from(post))
+                .postId(post.getPostId())
+                .postTitle(post.getTitle())
+                .postContent(post.getContent())
                 .author(post.isAnonym() ? "익명" : post.getUser().getNickName())
                 .likes(post.getVotes())
                 .comments(commentCount)

@@ -2,8 +2,10 @@ package com.goormthon.everytime.app.controller.board;
 
 import com.goormthon.everytime.app.dto.board.reqDto.CommentReqDto;
 import com.goormthon.everytime.app.dto.board.reqDto.PostReqDto;
-import com.goormthon.everytime.app.dto.board.resDto.PostDetailResDto;
-import com.goormthon.everytime.app.service.board.PostService;
+import com.goormthon.everytime.app.dto.board.resDto.PostDetailWrapperResDto;
+import com.goormthon.everytime.app.service.board.CommentCreateService;
+import com.goormthon.everytime.app.service.board.PostCreateService;
+import com.goormthon.everytime.app.service.board.PostDisplayService;
 import com.goormthon.everytime.global.template.ApiResTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,7 +22,9 @@ import java.security.Principal;
 @Tag(name = "게시글", description = "게시글을 담당하는 api 그룹")
 public class PostController {
 
-    private final PostService postService;
+    private final PostDisplayService postDisplayService;
+    private final PostCreateService postCreateService;
+    private final CommentCreateService commentCreateService;
 
     @GetMapping("/posts")
     @Operation(
@@ -33,18 +37,18 @@ public class PostController {
                     @ApiResponse(responseCode = "500", description = "서버 문제 or 관리자 문의")
             }
     )
-    public ResponseEntity<ApiResTemplate<PostDetailResDto>> getPost(
+    public ResponseEntity<ApiResTemplate<PostDetailWrapperResDto>> getPost(
             @RequestParam int boardId,
             @RequestParam Long postId,
             Principal principal) {
-        ApiResTemplate<PostDetailResDto> data = postService.getPost(boardId, postId, principal);
+        ApiResTemplate<PostDetailWrapperResDto> data = postDisplayService.getPost(boardId, postId, principal);
         return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 
     @PostMapping("/boards/{boardId}/upload")
     @Operation(
             summary = "게시글 등록",
-            description = "사용자가 게시글을 등록합니다.",
+            description = "게시글을 등록합니다.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "게시글 등록 성공"),
                     @ApiResponse(responseCode = "403", description = "권한 문제"),
@@ -55,7 +59,7 @@ public class PostController {
             @PathVariable int boardId,
             @ModelAttribute @Valid PostReqDto reqDto,
             Principal principal) {
-        ApiResTemplate<Void> data = postService.createPost(reqDto, principal, boardId);
+        ApiResTemplate<Void> data = postCreateService.createPost(reqDto, principal, boardId);
         return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 
@@ -75,7 +79,7 @@ public class PostController {
             @PathVariable Long postId,
             @RequestBody @Valid CommentReqDto reqDto,
             Principal principal) {
-        ApiResTemplate<Void> data = postService.createComment(reqDto, boardId, postId, principal);
+        ApiResTemplate<Void> data = commentCreateService.createComment(reqDto, boardId, postId, principal);
         return ResponseEntity.status(data.getStatusCode()).body(data);
     }
 }

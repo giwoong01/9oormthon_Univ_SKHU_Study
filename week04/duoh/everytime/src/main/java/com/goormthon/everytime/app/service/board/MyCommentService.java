@@ -33,20 +33,21 @@ public class MyCommentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
 
-        List<MyBoardResDto> resDtos = boardRepository.findAllByUniversity(user.getUniversity())
+        List<MyBoardResDto> myBoards = boardRepository.findAllByUniversity(user.getUniversity())
                 .stream()
                 .map(board -> getCommentsInBoard(board, user))
                 .filter(boardResDto -> !boardResDto.posts().isEmpty())
                 .collect(Collectors.toList());
 
-        return ApiResTemplate.success(SuccessCode.GET_MY_COMMENTS_SUCCESS, resDtos);
+        return ApiResTemplate.success(SuccessCode.GET_MY_COMMENTS_SUCCESS, myBoards);
     }
 
     private MyBoardResDto getCommentsInBoard(Board board, User user) {
-        List<MyPostResDto> resDtos = commentRepository.findByPost_BoardAndUser(board, user).stream()
+        List<MyPostResDto> myComments = commentRepository.findByPost_BoardAndUser(board, user).stream()
                 .map(comment -> MyPostResDto.of(comment.getPost(), commentRepository.countByPost(comment.getPost())))
+                .distinct()
                 .collect(Collectors.toList());
 
-        return MyBoardResDto.of(board, resDtos);
+        return MyBoardResDto.of(board, myComments);
     }
 }

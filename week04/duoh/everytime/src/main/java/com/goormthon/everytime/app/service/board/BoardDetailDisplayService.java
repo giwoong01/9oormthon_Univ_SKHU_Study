@@ -4,9 +4,9 @@ import com.goormthon.everytime.app.domain.board.Board;
 import com.goormthon.everytime.app.domain.board.BoardName;
 import com.goormthon.everytime.app.domain.board.post.Post;
 import com.goormthon.everytime.app.domain.user.User;
-import com.goormthon.everytime.app.dto.board.resDto.BoardListResDto;
-import com.goormthon.everytime.app.dto.board.resDto.PostSummaryResDto;
 import com.goormthon.everytime.app.dto.board.resDto.BoardDetailResDto;
+import com.goormthon.everytime.app.dto.board.resDto.BoardDetailWrapperResDto;
+import com.goormthon.everytime.app.dto.board.resDto.PostSummaryResDto;
 import com.goormthon.everytime.app.repository.BoardRepository;
 import com.goormthon.everytime.app.repository.CommentRepository;
 import com.goormthon.everytime.app.repository.PostRepository;
@@ -22,33 +22,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.util.List;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class BoardService {
+public class BoardDetailDisplayService {
 
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public ApiResTemplate<List<BoardListResDto>> getBoardList(Principal principal) {
-        Long userId = Long.parseLong(principal.getName());
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
+    public ApiResTemplate<BoardDetailWrapperResDto> getBoardDetail(
+            int boardId, int page, Principal principal) {
 
-        List<Board> boards = boardRepository.findAllByUniversity(user.getUniversity());
-
-        List<BoardListResDto> resDtos = boards.stream()
-                .map(BoardListResDto::from)
-                .toList();
-
-        return ApiResTemplate.success(SuccessCode.GET_BOARD_LIST_SUCCESS, resDtos);
-    }
-
-    public ApiResTemplate<BoardDetailResDto> getBoardDetail(int boardId, int page, Principal principal) {
         Long userId = Long.parseLong(principal.getName());
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
@@ -59,13 +47,13 @@ public class BoardService {
 
         Page<Post> postPage = postRepository.findByBoard(board, PageRequest.of(page - 1, 10));
 
-        Page<PostSummaryResDto> resDtos = postPage.map(post -> {
+        Page<PostSummaryResDto> postSummaries = postPage.map(post -> {
             int commentCount = commentRepository.countByPost(post);
             return PostSummaryResDto.of(post, commentCount);
         });
 
-        BoardDetailResDto resDto = BoardDetailResDto.of(board, resDtos);
+        BoardDetailResDto boardDetail = BoardDetailResDto.of(board, postSummaries);
 
-        return ApiResTemplate.success(SuccessCode.GET_SINGLE_BOARD_SUCCESS, resDto);
+        return ApiResTemplate.success(SuccessCode.GET_BOARD_DETAIL_SUCCESS, BoardDetailWrapperResDto.from(Collections.singletonList(boardDetail)));
     }
 }

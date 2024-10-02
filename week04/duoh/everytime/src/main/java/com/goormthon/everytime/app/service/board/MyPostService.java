@@ -4,6 +4,7 @@ import com.goormthon.everytime.app.domain.board.Board;
 import com.goormthon.everytime.app.domain.user.User;
 import com.goormthon.everytime.app.dto.board.resDto.MyBoardResDto;
 import com.goormthon.everytime.app.dto.board.resDto.MyPostResDto;
+import com.goormthon.everytime.app.dto.board.resDto.BoardWrapperResDto;
 import com.goormthon.everytime.app.repository.BoardRepository;
 import com.goormthon.everytime.app.repository.CommentRepository;
 import com.goormthon.everytime.app.repository.PostRepository;
@@ -30,25 +31,25 @@ public class MyPostService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
 
-    public ApiResTemplate<List<MyBoardResDto>> getMyPosts(Principal principal) {
+    public ApiResTemplate<BoardWrapperResDto> getMyPosts(Principal principal) {
         Long userId = Long.parseLong(principal.getName());
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
 
-        List<MyBoardResDto> resDtos = boardRepository.findAllByUniversity(user.getUniversity())
+        List<MyBoardResDto> myBoards = boardRepository.findAllByUniversity(user.getUniversity())
                 .stream()
                 .map(board -> getPostsInBoard(board, user))
                 .filter(boardResDto -> !boardResDto.posts().isEmpty())
                 .collect(Collectors.toList());
 
-        return ApiResTemplate.success(SuccessCode.GET_MY_POSTS_SUCCESS, resDtos);
+        return ApiResTemplate.success(SuccessCode.GET_MY_POSTS_SUCCESS, BoardWrapperResDto.from(myBoards));
     }
 
     private MyBoardResDto getPostsInBoard(Board board, User user) {
-        List<MyPostResDto> resDtos = postRepository.findByBoardAndUser(board, user).stream()
+        List<MyPostResDto> myPosts = postRepository.findByBoardAndUser(board, user).stream()
                 .map(post -> MyPostResDto.of(post, commentRepository.countByPost(post)))
                 .collect(Collectors.toList());
 
-        return MyBoardResDto.of(board, resDtos);
+        return MyBoardResDto.of(board, myPosts);
     }
 }

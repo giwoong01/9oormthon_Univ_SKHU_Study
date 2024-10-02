@@ -11,11 +11,11 @@ public record MyBoardResDto(
         String boardName,
         List<MyPostResDto> posts
 ) {
-    public static MyBoardResDto of(Board board, List<MyPostResDto> posts) {
+    public static MyBoardResDto of(Board board, List<MyPostResDto> myPost) {
         return MyBoardResDto.builder()
                 .boardId(board.getBoardName().getId())
                 .boardName(board.getBoardName().getDisplayName())
-                .posts(posts)
+                .posts(myPost)
                 .build();
     }
 }

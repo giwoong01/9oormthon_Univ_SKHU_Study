@@ -1,16 +1,12 @@
 package com.goormthon.everytime.app.service.board;
 
+import com.goormthon.everytime.app.domain.Image;
 import com.goormthon.everytime.app.domain.board.Board;
 import com.goormthon.everytime.app.domain.board.BoardName;
-import com.goormthon.everytime.app.domain.board.comment.Comment;
 import com.goormthon.everytime.app.domain.board.post.Post;
 import com.goormthon.everytime.app.domain.board.post.PostImage;
-import com.goormthon.everytime.app.domain.Image;
 import com.goormthon.everytime.app.domain.user.User;
-import com.goormthon.everytime.app.dto.board.reqDto.CommentReqDto;
 import com.goormthon.everytime.app.dto.board.reqDto.PostReqDto;
-import com.goormthon.everytime.app.dto.board.resDto.CommentResDto;
-import com.goormthon.everytime.app.dto.board.resDto.PostDetailResDto;
 import com.goormthon.everytime.app.repository.*;
 import com.goormthon.everytime.global.exception.CustomException;
 import com.goormthon.everytime.global.exception.code.ErrorCode;
@@ -25,12 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class PostService {
+public class PostCreateService {
 
     private static final Set<String> IMAGE_EXTENSIONS = Set.of(".jpg", ".jpeg", ".png");
 
@@ -40,7 +36,6 @@ public class PostService {
     private final PostImageRepository postImageRepository;
     private final UserRepository userRepository;
     private final S3Service s3Service;
-    private final CommentRepository commentRepository;
 
     @Transactional
     public ApiResTemplate<Void> createPost(
@@ -89,50 +84,6 @@ public class PostService {
 
     private boolean isValidImageExtension(MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        return IMAGE_EXTENSIONS.stream().anyMatch(fileName::endsWith);
-    }
-
-    public ApiResTemplate<PostDetailResDto> getPost(int boardId, Long postId, Principal principal) {
-        Long userId = Long.parseLong(principal.getName());
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
-
-        BoardName boardName = BoardName.fromId(boardId);
-        Board board = boardRepository.findByBoardNameAndUniversity(boardName, user.getUniversity())
-                .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND, ErrorCode.BOARD_NOT_FOUND.getMessage()));
-
-        Post post = postRepository.findByPostIdAndBoard(postId, board)
-                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
-
-        int commentsCount = commentRepository.countByPost(post);
-
-        List<CommentResDto> comments = commentRepository.findAllByPost(post).stream()
-                .map(CommentResDto::from)
-                .toList();
-
-        PostDetailResDto resDto = PostDetailResDto.of(post, commentsCount, comments);
-
-        return ApiResTemplate.success(SuccessCode.GET_POST_SUCCESS, resDto);
-    }
-
-    @Transactional
-    public ApiResTemplate<Void> createComment(
-            CommentReqDto reqDto, int boardId, Long postId, Principal principal) {
-
-        Long userId = Long.parseLong(principal.getName());
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
-
-        BoardName boardName = BoardName.fromId(boardId);
-        Board board = boardRepository.findByBoardNameAndUniversity(boardName, user.getUniversity())
-                .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND, ErrorCode.BOARD_NOT_FOUND.getMessage()));
-
-        Post post = postRepository.findByPostIdAndBoard(postId, board)
-                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
-
-        Comment comment = reqDto.toEntity(post, user);
-        commentRepository.save(comment);
-
-        return ApiResTemplate.success(SuccessCode.COMMENT_CREATED_SUCCESS, null);
+        return IMAGE_EXTENSIONS.stream().anyMatch(Objects.requireNonNull(fileName)::endsWith);
     }
 }

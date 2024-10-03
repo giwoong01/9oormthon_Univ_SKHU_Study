@@ -2,11 +2,15 @@ package com.example.everytime.post.applicatioin;
 
 import com.example.everytime.board.domain.Board;
 import com.example.everytime.board.domain.repository.BoardRepository;
+import com.example.everytime.post.api.dto.CommentDto;
 import com.example.everytime.post.api.dto.request.PostSaveReqDto;
 import com.example.everytime.post.api.dto.response.MyPostsResDto;
 import com.example.everytime.post.api.dto.response.PostSaveResDto;
+import com.example.everytime.post.domain.Comment;
 import com.example.everytime.post.domain.Post;
+import com.example.everytime.post.domain.repository.CommentRepository;
 import com.example.everytime.post.domain.repository.PostRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public PostSaveResDto savePost(long boardId, PostSaveReqDto postSaveReqDto) {
@@ -56,4 +61,26 @@ public class PostService {
         return new MyPostsResDto(postDtos);
     }
 
+    @Transactional
+    public void votePost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        post.incrementVotes();
+    }
+
+    @Transactional
+    public void addComment(Long postId, CommentDto commentDto) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+
+        // Builder 패턴 사용
+        Comment comment = Comment.builder()
+                .content(commentDto.content())
+                .author(commentDto.author())
+                .post(post)
+                .build();
+
+        commentRepository.save(comment);
+        post.incrementComments();
+    }
 }

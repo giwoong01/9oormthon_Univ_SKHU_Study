@@ -9,7 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,6 +44,9 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList = new ArrayList<>();
+
     @Builder
     private Post(String title, String content, String anonym, String author, int votes, int comments, Member member, Board board) {
         this.title = title;
@@ -57,5 +61,21 @@ public class Post extends BaseEntity {
 
     public boolean isAnonym() {
         return Boolean.parseBoolean(this.anonym);
+    }
+
+    public void incrementVotes() {
+        this.votes++;
+    }
+
+    public void decrementVotes() {
+        this.votes--;
+    }
+
+    public void incrementComments() {
+        this.comments++;
+    }
+
+    public void decrementComments() {
+        this.comments--;
     }
 }

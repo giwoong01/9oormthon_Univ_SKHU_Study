@@ -22,9 +22,10 @@ public class Board extends BaseEntity {
     @Column(name = "board_id")
     private Long boardId;
 
-    private String title;
+    private String boardName;
 
-    private String description;
+    @Enumerated(EnumType.STRING)
+    private BoardType boardType;
 
     @OneToMany(mappedBy = "board")
     private List<Post> posts = new ArrayList<>();

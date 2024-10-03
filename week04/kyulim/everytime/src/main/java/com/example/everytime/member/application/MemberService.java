@@ -10,6 +10,7 @@ import com.example.everytime.member.api.dto.response.MemberInfoResDto;
 import com.example.everytime.member.api.dto.response.MemberLoginResDto;
 import com.example.everytime.member.domain.Member;
 import com.example.everytime.member.domain.repository.MemberRepository;
+import com.example.everytime.member.domain.UniversityName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class MemberService {
 
         Member member = Member.builder()
                 .year(memberJoinReqDto.year())
-                .universityName(memberJoinReqDto.universityName())
+                .universityName(UniversityName.valueOf(memberJoinReqDto.universityName()))
                 .name(memberJoinReqDto.name())
                 .nickName(memberJoinReqDto.nickName())
                 .email(memberJoinReqDto.email())

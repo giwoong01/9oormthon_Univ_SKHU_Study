@@ -2,7 +2,6 @@ package com.example.everytime.member.domain;
 
 import com.example.everytime.global.entity.BaseEntity;
 import com.example.everytime.post.domain.Post;
-import com.example.everytime.universityName.domain.UniversityName;
 import com.example.everytime.friend.domain.Friend;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,7 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +24,7 @@ public class Member extends BaseEntity {
 
     private int year;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "universtiy_id")
+    @Enumerated(EnumType.STRING)
     private UniversityName universityName;
 
     private String name;

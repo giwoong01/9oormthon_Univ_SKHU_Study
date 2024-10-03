@@ -1,6 +1,5 @@
 package com.example.everytime.member.api.dto.reqeust;
 
-import com.example.everytime.universityName.domain.UniversityName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -10,7 +9,7 @@ public record MemberJoinReqDto(
         int year,
 
         @NotBlank(message = "학교명이 공백일 수 없습니다.")
-        UniversityName universityName,
+        String universityName,
 
         @NotBlank(message = "이름이 공백일 수 없습니다.")
         String name,

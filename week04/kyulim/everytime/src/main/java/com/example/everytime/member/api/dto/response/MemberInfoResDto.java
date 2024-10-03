@@ -1,8 +1,6 @@
 package com.example.everytime.member.api.dto.response;
 
 import com.example.everytime.member.domain.Member;
-import com.example.everytime.universityName.api.dto.UniversityNameDto;
-import com.example.everytime.universityName.domain.UniversityName;
 
 public record MemberInfoResDto(
         Long memberId,

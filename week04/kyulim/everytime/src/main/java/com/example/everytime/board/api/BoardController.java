@@ -1,11 +1,9 @@
 package com.example.everytime.board.api;
 
-import com.example.everytime.board.BoardService;
+import com.example.everytime.board.application.BoardService;
 import com.example.everytime.board.api.dto.BoardListResDto;
 import com.example.everytime.board.api.dto.BoardResDto;
 import com.example.everytime.global.template.RspTemplate;
-import com.example.everytime.post.api.dto.response.PostResDto;
-import com.example.everytime.post.applicatioin.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/boards")

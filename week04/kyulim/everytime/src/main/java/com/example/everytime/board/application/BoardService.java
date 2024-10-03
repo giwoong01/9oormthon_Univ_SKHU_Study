@@ -1,4 +1,4 @@
-package com.example.everytime.board;
+package com.example.everytime.board.application;
 
 import com.example.everytime.board.api.dto.BoardListResDto;
 import com.example.everytime.board.api.dto.BoardResDto;

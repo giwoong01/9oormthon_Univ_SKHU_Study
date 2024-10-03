@@ -64,16 +64,15 @@ public class PostService {
     @Transactional
     public void votePost(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
         post.incrementVotes();
     }
 
     @Transactional
     public void addComment(Long postId, CommentDto commentDto) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
-        // Builder 패턴 사용
         Comment comment = Comment.builder()
                 .content(commentDto.content())
                 .author(commentDto.author())
@@ -82,5 +81,14 @@ public class PostService {
 
         commentRepository.save(comment);
         post.incrementComments();
+    }
+
+    @Transactional
+    public void addScrap(Long boardId, Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+
+        post.incrementScraps();
+        postRepository.save(post);
     }
 }

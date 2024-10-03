@@ -34,6 +34,8 @@ public class Post extends BaseEntity {
 
     private int comments;
 
+    private int scraps;
+
     // files 추가해야 함
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,13 +50,14 @@ public class Post extends BaseEntity {
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    private Post(String title, String content, String anonym, String author, int votes, int comments, Member member, Board board) {
+    private Post(String title, String content, String anonym, String author, int votes, int comments, int scraps, Member member, Board board) {
         this.title = title;
         this.content = content;
         this.anonym = anonym;
         this.author = author;
         this.votes = votes;
         this.comments = comments;
+        this.scraps = scraps;
         this.member = member;
         this.board = board;
     }
@@ -77,5 +80,9 @@ public class Post extends BaseEntity {
 
     public void decrementComments() {
         this.comments--;
+    }
+
+    public void incrementScraps() {
+        this.scraps++;
     }
 }

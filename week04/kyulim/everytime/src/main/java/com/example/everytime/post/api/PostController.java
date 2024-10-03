@@ -79,4 +79,15 @@ public class PostController {
         postService.addComment(postId, commentDto);
         return new RspTemplate<>(HttpStatus.OK, "댓글 작성 성공");
     }
+
+    @Operation(summary = "스크랩 추가", description = "스크랩 추가")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "스크랩 추가 성공 !"),
+            @ApiResponse(responseCode = "401", description = "인증 실패", content = @Content(schema = @Schema(example = "INVALID_HEADER or INVALID_TOKEN"))),
+    })
+    @PostMapping("/{boardId}/{postId}/scrap")
+    public RspTemplate<Void> addScrap(@PathVariable Long boardId, @PathVariable Long postId) {
+        postService.addScrap(boardId, postId);
+        return new RspTemplate<>(HttpStatus.OK, "스크랩 추가 성공");
+    }
 }

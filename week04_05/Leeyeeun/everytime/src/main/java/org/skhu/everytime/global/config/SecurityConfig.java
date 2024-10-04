@@ -51,10 +51,14 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/user/join").permitAll()
-//                                .requestMatchers("/user/login").permitAll()
+                                .requestMatchers("/user/login").permitAll()
+                                .requestMatchers("/login/oauth2/**").permitAll()
+                                .requestMatchers("/boards/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                                 .anyRequest().authenticated()
                 )

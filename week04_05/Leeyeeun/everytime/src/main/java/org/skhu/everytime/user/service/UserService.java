@@ -1,14 +1,17 @@
 package org.skhu.everytime.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.skhu.everytime.community.board.api.dto.request.PostRequestDto;
 import org.skhu.everytime.user.Role;
 import org.skhu.everytime.user.User;
+import org.skhu.everytime.user.dto.UserProfileDto;
 import org.skhu.everytime.user.dto.UserSignUpDto;
 import org.skhu.everytime.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -40,11 +43,11 @@ public class UserService {
 
         // 학교 이름 유효성 검사
         if (!isValidUniversityName(userSignUpDto.universityName())) {
-            throw new Exception("학교 이름은 대학교가 아닌 대로 끝나야 합니다.");
+            throw new Exception("학교 이름은 '대'로 끝나야 합니다.");
         }
 
         // 이메일 중복 체크
-        if (userRepository.findByEmail(userSignUpDto.email()).isPresent()) {
+        if (userRepository.existsByEmail(userSignUpDto.email())) { // 수정된 부분
             throw new Exception("이미 존재하는 이메일입니다.");
         }
 
@@ -53,6 +56,7 @@ public class UserService {
             throw new Exception("이미 존재하는 닉네임입니다.");
         }
 
+        // 사용자 객체 생성
         User user = User.builder()
                 .email(userSignUpDto.email())
                 .password(userSignUpDto.password())
@@ -63,8 +67,31 @@ public class UserService {
                 .role(Role.USER)
                 .build();
 
-        user.passwordEncode(passwordEncoder); // 비밀번호 암호화
+        // 비밀번호 암호화
+        user.passwordEncode(passwordEncoder);
         userRepository.save(user);
+    }
+
+    public UserProfileDto getUserProfile(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            User u = user.get();
+            return new UserProfileDto(
+                    u.getId(),
+                    u.getEmail(),
+                    u.getName(),
+                    u.getNickname(),
+                    u.getYear(),
+                    u.getUniversityName()
+            );
+        } else {
+            throw new RuntimeException("사용자를 찾을 수 없습니다."); // 예외 처리
+        }
+    }
+
+    // 이메일 존재 여부를 확인하는 메서드
+    public boolean isExistByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     private void validateEmptyFields(UserSignUpDto userSignUpDto) throws Exception {
@@ -93,18 +120,19 @@ public class UserService {
 
     // 이메일 형식 검증 메소드
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.(com|net|org)$"; // @gmail.com, @naver.com 등
-        return Pattern.matches(emailRegex, email);
+        String emailPattern = "^[\\w-\\.]+@[\\w-]+\\.[a-zA-Z]{2,4}$";
+        return Pattern.matches(emailPattern, email);
     }
 
-    // 비밀번호 조건 검증 메소드
+    // 비밀번호 유효성 검사
     private boolean isValidPassword(String password) {
-        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-        return Pattern.matches(passwordRegex, password);
+        String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        return Pattern.matches(passwordPattern, password);
     }
 
-    // 학교 이름 유효성 검증 메소드
+    // 대학명 유효성 검사
     private boolean isValidUniversityName(String universityName) {
         return universityName.endsWith("대");
     }
+
 }

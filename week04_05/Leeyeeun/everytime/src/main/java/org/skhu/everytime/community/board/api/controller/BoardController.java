@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.skhu.everytime.community.board.api.dto.response.BoardResponseDto;
 import org.skhu.everytime.community.board.application.BoardService;
 import org.skhu.everytime.community.board.application.PostService;
-import org.skhu.everytime.community.board.domain.Board;
 import org.skhu.everytime.community.board.domain.repository.BoardRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +23,6 @@ import java.util.Map;
 public class BoardController {
 
     private final BoardService boardService;
-    private final BoardRepository boardRepository;
-    private final PostService postService;
-
 
     @Operation(summary = "전체 게시판 조회", description = "모든 게시판을 조회합니다.")
     @ApiResponses(value = {
@@ -45,9 +41,7 @@ public class BoardController {
     })
     @GetMapping("/boards/{boardId}")
     public ResponseEntity<BoardResponseDto> getBoard(@PathVariable Long boardId) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new RuntimeException("게시판을 찾을 수 없습니다."));
-        BoardResponseDto response = postService.getPostsByBoard(board);
+        BoardResponseDto response = boardService.getBoardById(boardId);
         return ResponseEntity.ok(response);
     }
 }

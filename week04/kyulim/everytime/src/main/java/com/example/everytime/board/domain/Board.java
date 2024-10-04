@@ -32,4 +32,10 @@ public class Board extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UniversityName universityName;
 
+    public Board(Long boardId, String boardName, BoardType boardType, UniversityName universityName) {
+        this.boardId = boardId;
+        this.boardName = boardName;
+        this.boardType = boardType;
+        this.universityName = universityName;
+    }
 }

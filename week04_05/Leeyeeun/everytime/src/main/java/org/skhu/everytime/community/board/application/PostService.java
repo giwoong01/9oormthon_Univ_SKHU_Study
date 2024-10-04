@@ -1,8 +1,9 @@
 package org.skhu.everytime.community.board.application;
 
 import lombok.RequiredArgsConstructor;
-import org.skhu.everytime.community.board.api.dto.BoardResponseDto;
-import org.skhu.everytime.community.board.api.dto.PostResponseDto;
+import org.skhu.everytime.community.board.api.dto.request.PostRequestDto;
+import org.skhu.everytime.community.board.api.dto.response.BoardResponseDto;
+import org.skhu.everytime.community.board.api.dto.response.PostResponseDto;
 import org.skhu.everytime.community.board.domain.Board;
 import org.skhu.everytime.community.board.domain.Comment;
 import org.skhu.everytime.community.board.domain.Post;
@@ -10,6 +11,7 @@ import org.skhu.everytime.community.board.domain.Scrap;
 import org.skhu.everytime.community.board.domain.repository.CommentRepository;
 import org.skhu.everytime.community.board.domain.repository.PostRepository;
 import org.skhu.everytime.community.board.domain.repository.ScrapRepository;
+import org.skhu.everytime.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final ScrapRepository scrapRepository;
+    private final UserRepository userRepository;
 
     public List<PostResponseDto> getMyArticles(User user) {
         return postRepository.findByUser(user).stream()
@@ -44,6 +47,11 @@ public class PostService {
                 .map(Scrap::getPost)
                 .map(this::postResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    // 게시글 저장 메소드
+    public void savePost(Post post) {
+        postRepository.save(post);
     }
 
     public BoardResponseDto getPostsByBoard(Board board) {

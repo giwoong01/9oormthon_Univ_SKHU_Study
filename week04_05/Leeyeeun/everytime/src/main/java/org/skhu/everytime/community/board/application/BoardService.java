@@ -1,7 +1,7 @@
 package org.skhu.everytime.community.board.application;
 
 import lombok.RequiredArgsConstructor;
-import org.skhu.everytime.community.board.api.dto.BoardResponseDto;
+import org.skhu.everytime.community.board.api.dto.response.BoardResponseDto;
 import org.skhu.everytime.community.board.domain.Board;
 import org.skhu.everytime.community.board.domain.repository.BoardRepository;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package org.skhu.everytime.community.board.api.dto;
+package org.skhu.everytime.community.board.api.dto.response;
 
 import java.util.List;
 

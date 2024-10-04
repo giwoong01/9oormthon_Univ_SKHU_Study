@@ -18,13 +18,19 @@ public class BoardService {
     // 전체 게시판 조회
     public List<BoardResponseDto> getAllBoards() {
         return boardRepository.findAll().stream()
-                .map(this::boardResponseDto)
+                .map(this::mapBoardResponseDto)
                 .collect(Collectors.toList());
     }
 
-
     // 개별 게시판 조회
-    private BoardResponseDto boardResponseDto(Board board) {
+    public BoardResponseDto getBoardById(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("게시판을 찾을 수 없습니다."));
+        return mapBoardResponseDto(board);
+    }
+
+    // Board->BoardResponseDto 변환
+    private BoardResponseDto mapBoardResponseDto(Board board) {
         List<BoardResponseDto.ArticleResponseDto> articles = board.getPosts().stream()
                 .map(post -> new BoardResponseDto.ArticleResponseDto(
                         post.getPostId(),

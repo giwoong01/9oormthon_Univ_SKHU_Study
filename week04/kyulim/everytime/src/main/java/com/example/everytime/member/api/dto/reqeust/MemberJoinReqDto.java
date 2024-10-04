@@ -3,9 +3,10 @@ package com.example.everytime.member.api.dto.reqeust;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 public record MemberJoinReqDto(
-        @NotBlank(message = "입학연도가 공백일 수 없습니다.")
+        @Positive(message = "입학연도가 공백일 수 없습니다.")
         int year,
 
         @NotBlank(message = "학교명이 공백일 수 없습니다.")

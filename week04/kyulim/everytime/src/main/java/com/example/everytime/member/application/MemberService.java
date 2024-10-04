@@ -9,6 +9,7 @@ import com.example.everytime.member.api.dto.reqeust.MemberLoginReqDto;
 import com.example.everytime.member.api.dto.response.MemberInfoResDto;
 import com.example.everytime.member.api.dto.response.MemberLoginResDto;
 import com.example.everytime.member.domain.Member;
+import com.example.everytime.member.domain.Role;
 import com.example.everytime.member.domain.repository.MemberRepository;
 import com.example.everytime.member.domain.UniversityName;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,7 @@ public class MemberService {
                 .id(memberJoinReqDto.id())
                 .password(passwordEncoder.encode(memberJoinReqDto.password()))
                 .checkPassword(memberJoinReqDto.checkPassword())
+                .role(Role.ROLE_USER)
                 .build();
         memberRepository.save(member);
     }

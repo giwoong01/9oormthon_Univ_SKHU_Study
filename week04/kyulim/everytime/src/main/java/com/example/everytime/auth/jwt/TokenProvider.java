@@ -95,8 +95,8 @@ public class TokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        Member member = memberRepository.findByEmail(claims.getSubject()).
-                orElseThrow();
+        Member member = memberRepository.findById(claims.getSubject()).
+                orElseThrow(() -> new RuntimeException( "사용자를 찾을 수 없습니다."));
 
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(member.getRole().toString()));
         return new UsernamePasswordAuthenticationToken(member.getEmail(),
@@ -115,10 +115,19 @@ public class TokenProvider {
     // 토큰 검증
     public boolean validateToken(String token) throws CustomAuthenticationException {
         try {
+            if (token == null || token.trim().isEmpty()) {
+                log.error("토큰이 null 또는 비어있습니다.");
+                throw new CustomAuthenticationException("JWT가 null이거나 비어 있거나 공백만 있습니다.");
+            }
+
+            token = token.trim();
+            log.info("검증할 토큰: {}", token);
+
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
+            log.info("토큰 검증 성공");
             return true;
         } catch (UnsupportedJwtException | MalformedJwtException exception) {
             log.error("JWT가 유효하지 않습니다.");

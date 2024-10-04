@@ -1,0 +1,82 @@
+spring:
+  profiles:
+    active: prod
+
+  datasource:
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${spring.datasource.security.oauth2.client.registration.kakao.client-id}
+            client-secret: ${spring.datasource.security.oauth2.client.registration.kakao.client-secret}
+            redirect-uri: ${spring.datasource.security.oauth2.client.registration.kakao.redirect-uri}
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
+          google:
+            client-id: ${spring.datasource.security.oauth2.client.registration.google.client-id}
+            client-secret: ${spring.datasource.security.oauth2.client.registration.google.client-secret}
+            redirect-uri: ${spring.datasource.security.oauth2.client.registration.google.redirect-uri}
+            client-name: Google
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - email
+              - profile
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+
+jwt:
+  secretKey: ${spring.jwt.secretKey}
+
+  access:
+    expiration: ${spring.jwt.access.expiration}
+    header: ${spring.jwt.access.header}
+
+  refresh:
+    expiration: ${spring.jwt.refresh.expiration}
+    header: ${spring.jwt.refresh.header}
+
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${cloud.aws.credentials.accessKey}
+      secretKey: ${cloud.aws.credentials.secret-key}
+    s3:
+      bucket: ${cloud.aws.s3.bucket}
+    region: ${cloud.aws.region}
+    stack:
+      auto: false
+
+client-id: ${client-id}
+client-secret: ${client-secret}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

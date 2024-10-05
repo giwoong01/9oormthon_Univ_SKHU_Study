@@ -21,7 +21,12 @@ public enum SuccessCode {
     GET_ALL_BOARD(HttpStatus.OK, "전체 게시판 조회 성공"),
     POST_UPLOADED(HttpStatus.OK, "게시글 업로드 성공"),
     GET_MY_POSTS(HttpStatus.OK, "내가 쓴 글 조회 성공"),
-    ;
+    CHAT_ROOM_CREATED(HttpStatus.OK, "채팅방 생성 성공"),
+    GET_CHAT_ROOM(HttpStatus.OK, "채팅방 조회 성공"),
+    ADD_COMMENT(HttpStatus.OK, "댓글 작성 성공"),
+    GET_CHATTING_MESSAGES(HttpStatus.OK, "채팅방 메시지 조회 성공"),
+    GET_MY_COMMENTS(HttpStatus.OK,"내가 쓴 댓글 조회 성공" ),
+    GET_CHAT_RECORD_LIST(HttpStatus.OK, "채팅 내용 조회 성공");
 
     private final HttpStatus httpStatus;
     private final String message;

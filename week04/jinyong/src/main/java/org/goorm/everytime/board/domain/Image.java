@@ -5,6 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Image {
@@ -13,23 +14,9 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String type;
-    private long size;
-
-    @Lob
-    private byte[] data;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-    @Builder
-    public Image(String fileName, String fileType, long size, byte[] data, Post post) {
-        this.name = fileName;
-        this.type = fileType;
-        this.size = size;
-        this.data = data;
-        this.post = post;
-    }
 }

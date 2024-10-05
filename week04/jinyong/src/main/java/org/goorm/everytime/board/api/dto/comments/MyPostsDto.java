@@ -1,4 +1,4 @@
-package org.goorm.everytime.board.api.dto.member_comments;
+package org.goorm.everytime.board.api.dto.comments;
 
 import org.goorm.everytime.board.domain.Post;
 

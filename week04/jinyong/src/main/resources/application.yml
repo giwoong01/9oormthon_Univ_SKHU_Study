@@ -18,6 +18,11 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+    mongodb:
+      database: ${MONGODB_DATABASE}
+      host: ${MONGODB_HOST}
+      port: ${MONGODB_PORT}
+      uri: ${MONGODB_URI}
   security:
     oauth2:
       client:
@@ -51,7 +56,16 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: method
     path: /docs
-
+cloud:
+  aws:
+    s3:
+      bucket: ${AWS_BUCKET}
+    region:
+      static: ${AWS_REGION}
+    stack.auto: false
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
 logging:
   level:
     org:

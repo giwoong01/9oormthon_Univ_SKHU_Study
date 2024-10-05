@@ -19,6 +19,7 @@ public class JoinService {
     private static final String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$";
 
     //회원정보 저장
+    @Transactional
     public void join(JoinDto joinDto) {
         isNotDuplicatedUsername(joinDto.username());
         isValidPassword(joinDto.password());

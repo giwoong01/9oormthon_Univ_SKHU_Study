@@ -1,4 +1,4 @@
-package org.goorm.everytime.board.api.dto.posts;
+package org.goorm.everytime.board.api.dto.comments;
 
 import org.goorm.everytime.board.domain.Comment;
 
@@ -10,7 +10,7 @@ public record CommentDto(
     public CommentDto(Comment comment) {
         this(
                 comment.getId(),
-                comment.getCommentContent(),
+                comment.getContent(),
                 comment.getMember().getUsername()
         );
     }

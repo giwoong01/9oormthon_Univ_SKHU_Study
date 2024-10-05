@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
-import org.goorm.everytime.board.api.dto.member_comments.MyPostsDto;
+import org.goorm.everytime.board.api.dto.comments.MyPostsDto;
 import org.goorm.everytime.board.api.dto.posts.PostUploadDto;
 import org.goorm.everytime.board.service.PostProvider;
 import org.goorm.everytime.board.service.PostUploader;

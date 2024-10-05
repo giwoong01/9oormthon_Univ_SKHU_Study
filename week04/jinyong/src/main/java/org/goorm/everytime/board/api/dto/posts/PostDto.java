@@ -1,5 +1,6 @@
 package org.goorm.everytime.board.api.dto.posts;
 
+import org.goorm.everytime.board.api.dto.comments.CommentDto;
 import org.goorm.everytime.board.domain.Post;
 
 import java.util.List;

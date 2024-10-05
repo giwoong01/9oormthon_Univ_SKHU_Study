@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BoardsDataUtil {
+public class BoardsInitializer {
 
     private final BoardsRespository boardsRespository;
     private final TransactionTemplate transactionTemplate;

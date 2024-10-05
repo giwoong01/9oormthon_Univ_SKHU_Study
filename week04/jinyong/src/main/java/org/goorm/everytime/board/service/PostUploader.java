@@ -3,20 +3,15 @@ package org.goorm.everytime.board.service;
 import lombok.RequiredArgsConstructor;
 import org.goorm.everytime.board.api.dto.posts.PostUploadDto;
 import org.goorm.everytime.board.domain.Boards;
-import org.goorm.everytime.board.domain.Image;
 import org.goorm.everytime.board.domain.Post;
 import org.goorm.everytime.board.domain.repository.BoardsRespository;
-import org.goorm.everytime.board.domain.repository.ImageRepository;
 import org.goorm.everytime.board.domain.repository.PostRepository;
 import org.goorm.everytime.member.domain.Member;
 import org.goorm.everytime.member.domain.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +20,7 @@ public class PostUploader {
     private final BoardsRespository boardsRespository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
     public void uploadPost(PostUploadDto postUploadDto, Principal principal) {
         validateImageFiles(postUploadDto.files());
@@ -52,12 +47,9 @@ public class PostUploader {
     }
 
     private void saveImagesFromDto(PostUploadDto postUploadDto, Post post) {
-        List<Image> images = new ArrayList<>();
         for (MultipartFile file : postUploadDto.files()) {
-            Image image = convertToFileEntity(file, post);
-            images.add(image);
+            imageService.uploadFile(file, post);
         }
-        imageRepository.saveAll(images);
     }
 
     private void validateImageFiles(MultipartFile[] files) {
@@ -71,19 +63,5 @@ public class PostUploader {
     private boolean isImageFile(MultipartFile file) {
         String contentType = file.getContentType();
         return contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/gif"));
-    }
-
-    private Image convertToFileEntity(MultipartFile file, Post post) {
-        try {
-            return Image.builder()
-                    .fileName(file.getOriginalFilename())
-                    .fileType(file.getContentType())
-                    .size(file.getSize())
-                    .data(file.getBytes())
-                    .post(post)
-                    .build();
-        } catch (IOException e) {
-            throw new RuntimeException("파일 변환 중 오류가 발생했습니다.", e);
-        }
     }
 }

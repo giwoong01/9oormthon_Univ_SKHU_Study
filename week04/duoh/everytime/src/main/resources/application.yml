@@ -1,0 +1,58 @@
+spring:
+  profiles:
+    active: prod
+
+  datasource:
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: ${spring.datasource.driver-class-name}
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
+
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_SERVER}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: ${S3_BUCKET}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-validity-in-milliseconds: ${ACCESS_TOKEN_VALIDITY_IN_MILLISECONDS}
+  refresh-token-validity-in-milliseconds: ${REFRESH_TOKEN_VALIDITY_IN_MILLISECONDS}
+
+oauth:
+  kakao:
+    client-id: ${KAKAO_CLIENT_ID}
+    redirect-uri: ${KAKAO_REDIRECT_URI}
+    secret-key: ${KAKAO_SECRET_KEY}
+
+  google:
+    client-id: ${GOOGLE_CLIENT_ID}
+    redirect-uri: ${GOOGLE_REDIRECT_URI}
+    secret-key: ${GOOGLE_SECRET_KEY}

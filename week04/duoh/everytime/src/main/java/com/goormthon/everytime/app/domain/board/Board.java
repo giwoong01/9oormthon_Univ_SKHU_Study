@@ -28,7 +28,7 @@ public class Board {
     @Column(nullable = false)
     private University university;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "board")
     private List<Post> posts;
 
     @Builder
